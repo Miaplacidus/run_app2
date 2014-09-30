@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Circle:</strong>
+  <%= @post.circle_id %>
+</p>
+
+<p>
+  <strong>Creator:</strong>
+  <%= @post.creator_id %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @post.time %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @post.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @post.longitude %>
+</p>
+
+<p>
+  <strong>Pace:</strong>
+  <%= @post.pace %>
+</p>
+
+<p>
+  <strong>Notes:</strong>
+  <%= @post.notes %>
+</p>
+
+<p>
+  <strong>Complete:</strong>
+  <%= @post.complete %>
+</p>
+
+<p>
+  <strong>Min amt:</strong>
+  <%= @post.min_amt %>
+</p>
+
+<p>
+  <strong>Age pref:</strong>
+  <%= @post.age_pref %>
+</p>
+
+<p>
+  <strong>Gender pref:</strong>
+  <%= @post.gender_pref %>
+</p>
+
+<p>
+  <strong>Max runners:</strong>
+  <%= @post.max_runners %>
+</p>
+
+<p>
+  <strong>Min distance:</strong>
+  <%= @post.min_distance %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @post.address %>
+</p>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>

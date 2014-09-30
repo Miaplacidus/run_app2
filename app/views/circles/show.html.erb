@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @circle.name %>
+</p>
+
+<p>
+  <strong>Max members:</strong>
+  <%= @circle.max_members %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @circle.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @circle.longitude %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @circle.description %>
+</p>
+
+<p>
+  <strong>Level:</strong>
+  <%= @circle.level %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @circle.city %>
+</p>
+
+<p>
+  <strong>Admin:</strong>
+  <%= @circle.admin_id %>
+</p>
+
+<%= link_to 'Edit', edit_circle_path(@circle) %> |
+<%= link_to 'Back', circles_path %>

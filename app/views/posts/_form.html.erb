@@ -1,0 +1,73 @@
+<%= form_for(@post) do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :circle_id %><br>
+    <%= f.number_field :circle_id %>
+  </div>
+  <div class="field">
+    <%= f.label :creator_id %><br>
+    <%= f.number_field :creator_id %>
+  </div>
+  <div class="field">
+    <%= f.label :time %><br>
+    <%= f.datetime_select :time %>
+  </div>
+  <div class="field">
+    <%= f.label :latitude %><br>
+    <%= f.text_field :latitude %>
+  </div>
+  <div class="field">
+    <%= f.label :longitude %><br>
+    <%= f.text_field :longitude %>
+  </div>
+  <div class="field">
+    <%= f.label :pace %><br>
+    <%= f.number_field :pace %>
+  </div>
+  <div class="field">
+    <%= f.label :notes %><br>
+    <%= f.text_area :notes %>
+  </div>
+  <div class="field">
+    <%= f.label :complete %><br>
+    <%= f.check_box :complete %>
+  </div>
+  <div class="field">
+    <%= f.label :min_amt %><br>
+    <%= f.text_field :min_amt %>
+  </div>
+  <div class="field">
+    <%= f.label :age_pref %><br>
+    <%= f.number_field :age_pref %>
+  </div>
+  <div class="field">
+    <%= f.label :gender_pref %><br>
+    <%= f.number_field :gender_pref %>
+  </div>
+  <div class="field">
+    <%= f.label :max_runners %><br>
+    <%= f.number_field :max_runners %>
+  </div>
+  <div class="field">
+    <%= f.label :min_distance %><br>
+    <%= f.number_field :min_distance %>
+  </div>
+  <div class="field">
+    <%= f.label :address %><br>
+    <%= f.text_field :address %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

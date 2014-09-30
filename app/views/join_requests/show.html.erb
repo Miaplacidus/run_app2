@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cicle:</strong>
+  <%= @join_request.cicle_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @join_request.user_id %>
+</p>
+
+<p>
+  <strong>Accepted:</strong>
+  <%= @join_request.accepted %>
+</p>
+
+<%= link_to 'Edit', edit_join_request_path(@join_request) %> |
+<%= link_to 'Back', join_requests_path %>

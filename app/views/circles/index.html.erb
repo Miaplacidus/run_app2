@@ -1,0 +1,39 @@
+<h1>Listing circles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Max members</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Description</th>
+      <th>Level</th>
+      <th>City</th>
+      <th>Admin</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @circles.each do |circle| %>
+      <tr>
+        <td><%= circle.name %></td>
+        <td><%= circle.max_members %></td>
+        <td><%= circle.latitude %></td>
+        <td><%= circle.longitude %></td>
+        <td><%= circle.description %></td>
+        <td><%= circle.level %></td>
+        <td><%= circle.city %></td>
+        <td><%= circle.admin_id %></td>
+        <td><%= link_to 'Show', circle %></td>
+        <td><%= link_to 'Edit', edit_circle_path(circle) %></td>
+        <td><%= link_to 'Destroy', circle, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Circle', new_circle_path %>
