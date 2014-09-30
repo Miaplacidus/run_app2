@@ -1,4 +1,5 @@
 class JoinRequestsController < ApplicationController
+  before_action :require_logged_in
   before_action :set_join_request, only: [:show, :edit, :update, :destroy]
 
   # GET /join_requests

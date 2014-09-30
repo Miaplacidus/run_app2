@@ -1,4 +1,5 @@
 class CommitmentsController < ApplicationController
+  before_action :require_logged_in
   before_action :set_commitment, only: [:show, :edit, :update, :destroy]
 
   # GET /commitments
