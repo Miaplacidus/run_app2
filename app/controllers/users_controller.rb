@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_logged_in, :except => [:index]
+  skip_before_action :require_logged_in, :only => [:index]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users

@@ -1,5 +1,4 @@
 class ChallengesController < ApplicationController
-  before_action :require_logged_in
   before_action :set_challenge, only: [:show, :edit, :update, :destroy]
 
   # GET /challenges

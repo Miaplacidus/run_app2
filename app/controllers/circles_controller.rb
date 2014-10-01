@@ -1,5 +1,4 @@
 class CirclesController < ApplicationController
-  before_action :require_logged_in
   before_action :set_circle, only: [:show, :edit, :update, :destroy]
 
   # GET /circles
