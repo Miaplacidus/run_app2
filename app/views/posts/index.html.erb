@@ -1,51 +1,19 @@
 <h1>Listing posts</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Circle</th>
-      <th>Creator</th>
-      <th>Time</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
-      <th>Pace</th>
-      <th>Notes</th>
-      <th>Complete</th>
-      <th>Min amt</th>
-      <th>Age pref</th>
-      <th>Gender pref</th>
-      <th>Max runners</th>
-      <th>Min distance</th>
-      <th>Address</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<h1>Posts#index</h1>
+<p>Find me in app/views/posts/index.html.erb</p>
 
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.circle_id %></td>
-        <td><%= post.creator_id %></td>
-        <td><%= post.time %></td>
-        <td><%= post.latitude %></td>
-        <td><%= post.longitude %></td>
-        <td><%= post.pace %></td>
-        <td><%= post.notes %></td>
-        <td><%= post.complete %></td>
-        <td><%= post.min_amt %></td>
-        <td><%= post.age_pref %></td>
-        <td><%= post.gender_pref %></td>
-        <td><%= post.max_runners %></td>
-        <td><%= post.min_distance %></td>
-        <td><%= post.address %></td>
-        <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<!-- Button trigger modal -->
+  <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#postcreatemodal">
+  Create a Run
+</button>
 
-<br>
+<!-- Modal -->
+<div class="modal fade" id="postcreatemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+     <%= render :partial => "form" %>
+  </div>
+</div>
 
-<%= link_to 'New Post', new_post_path %>
+
+

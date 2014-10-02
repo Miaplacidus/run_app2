@@ -31,11 +31,11 @@ class User < ActiveRecord::Base
   def self.gender_id(user, gender)
     if gender == 'female'
         user.gender = 1
-      elsif gender == 'male'
-        user.gender = 2
-      else
-        user.gender = 0
-      end
+    elsif gender == 'male'
+      user.gender = 2
+    else
+      user.gender = 0
+    end
   end
 
   def self.nearby?(filters)

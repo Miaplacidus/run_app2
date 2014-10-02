@@ -1,73 +1,104 @@
-<%= form_for(@post) do |f| %>
-  <% if @post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">Schedule a Run</h4>
+  </div>
+  <div class="modal-body">
 
-      <ul>
-      <% @post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+    <% gender = "" %>
+      <% if current_user.gender == 0 %>
+        <% gender = "none" %>
+      <% elsif current_user.gender == 1 %>
+        <% gender = "Women" %>
+      <% else %>
+        <% gender = "Men" %>
+    <% end %>
+
+    <% months = [] %>
+    <% month_nums = [] %>
+    <% (Time.now.month..Time.now.month+6).each do |num| %>
+    <%  if num < 13 %>
+    <%    month_nums << num %>
+    <%  else %>
+    <%    month_nums << num - 12 %>
+    <%  end %>
+    <% end %>
+
+    <% month_nums.each {|m| months << [Date::MONTHNAMES[m], m]} %>
+
+    <%= form_for(@post, remote: true) do |f| %>
+      <% if @post.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+          <ul>
+          <% @post.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :circle_id %><br>
-    <%= f.number_field :circle_id %>
+      <div class="field">
+        <%= f.hidden_field :creator_id, :value => current_user.id %>
+        <%= f.hidden_field :complete, :value => false %>
+      </div>
+
+      <div class="field">
+        <%= f.label ("Location of Run (street, city, state/province, country)") %><br>
+        <%= f.text_field :address %>
+      </div>
+
+      <div class="field">
+        <!-- <%= f.datetime_select :time %> -->
+
+        <%= label_tag("When") %>
+        <%= select_day(Time.zone.now.day, prefix: :day) %>
+        <%= select_tag(:month_select, options_for_select(months)) %>
+        <%= select_year(Date.today, prefix: :year, :start_year => Time.now.year, :end_year => 6.months.from_now.year) %> at
+        <%= select_time(Time.zone.now, :start_time => Time.zone.now, :minute_step => 15, :ampm => true ) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :pace %>
+        <%= f.select(:pace, options_for_select([["All Levels", 0], [ "Military 6 min/mi ", 1], ["Advanced 6-7 min/mi", 2], ["High Intermediate 7-8 min/mi", 3], ["Intermediate 8-9 min/mi", 4], ["Beginner 9-10 min/mi", 5], ["Jogger 10-11 min/mi", 6], ["Speedwalker 11-12 min/mi", 7], ["Sprints 12+ min/mi", 8] ])) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :minimum_distance %>
+        <%= f.select(:min_distance, options_for_select([["1 mi", 0], ["3 mi", 3], ["5 mi", 5]])) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :gender_preference %>
+        <%= f.select(:gender_pref, options_for_select([["Mixed Gender Run", 0], [gender + "'s Run", current_user.gender]], 0)) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :age_group %>
+        <%= f.select(:age_pref, options_for_select([["None", 0], ["Your age group", 1]])) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :minimum_monetary_commitment %><br>
+        <%= f.select(:min_amt, options_for_select((0..20).step(5)))%>
+      </div>
+
+      <div class="field">
+        <%= f.label :max_runners %><br>
+        <%= f.select(:max_runners, options_for_select((2..14).step(3))) %>
+      </div>
+
+      <div class="field">
+        <%= f.label("Notes/Special Instructions") %><br>
+        <%= f.text_area :notes %>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= f.submit "Create Run", :class => "btn btn-primary" %>
+      </div>
+    <% end %>
+
   </div>
-  <div class="field">
-    <%= f.label :creator_id %><br>
-    <%= f.number_field :creator_id %>
-  </div>
-  <div class="field">
-    <%= f.label :time %><br>
-    <%= f.datetime_select :time %>
-  </div>
-  <div class="field">
-    <%= f.label :latitude %><br>
-    <%= f.text_field :latitude %>
-  </div>
-  <div class="field">
-    <%= f.label :longitude %><br>
-    <%= f.text_field :longitude %>
-  </div>
-  <div class="field">
-    <%= f.label :pace %><br>
-    <%= f.number_field :pace %>
-  </div>
-  <div class="field">
-    <%= f.label :notes %><br>
-    <%= f.text_area :notes %>
-  </div>
-  <div class="field">
-    <%= f.label :complete %><br>
-    <%= f.check_box :complete %>
-  </div>
-  <div class="field">
-    <%= f.label :min_amt %><br>
-    <%= f.text_field :min_amt %>
-  </div>
-  <div class="field">
-    <%= f.label :age_pref %><br>
-    <%= f.number_field :age_pref %>
-  </div>
-  <div class="field">
-    <%= f.label :gender_pref %><br>
-    <%= f.number_field :gender_pref %>
-  </div>
-  <div class="field">
-    <%= f.label :max_runners %><br>
-    <%= f.number_field :max_runners %>
-  </div>
-  <div class="field">
-    <%= f.label :min_distance %><br>
-    <%= f.number_field :min_distance %>
-  </div>
-  <div class="field">
-    <%= f.label :address %><br>
-    <%= f.text_field :address %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
