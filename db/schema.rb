@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140929204105) do
+ActiveRecord::Schema.define(version: 20141208173107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "challenges", force: true do |t|
     t.string   "name"
@@ -27,9 +28,9 @@ ActiveRecord::Schema.define(version: 20140929204105) do
     t.datetime "updated_at"
   end
 
-  add_index "challenges", ["post_id"], name: "index_challenges_on_post_id", using: :btree
-  add_index "challenges", ["recipient_id"], name: "index_challenges_on_recipient_id", using: :btree
-  add_index "challenges", ["sender_id"], name: "index_challenges_on_sender_id", using: :btree
+  add_index "challenges", ["post_id"], :name => "index_challenges_on_post_id"
+  add_index "challenges", ["recipient_id"], :name => "index_challenges_on_recipient_id"
+  add_index "challenges", ["sender_id"], :name => "index_challenges_on_sender_id"
 
   create_table "circle_users", force: true do |t|
     t.integer  "circle_id"
@@ -38,8 +39,8 @@ ActiveRecord::Schema.define(version: 20140929204105) do
     t.datetime "updated_at"
   end
 
-  add_index "circle_users", ["circle_id"], name: "index_circle_users_on_circle_id", using: :btree
-  add_index "circle_users", ["user_id"], name: "index_circle_users_on_user_id", using: :btree
+  add_index "circle_users", ["circle_id"], :name => "index_circle_users_on_circle_id"
+  add_index "circle_users", ["user_id"], :name => "index_circle_users_on_user_id"
 
   create_table "circles", force: true do |t|
     t.string   "name"
@@ -54,7 +55,7 @@ ActiveRecord::Schema.define(version: 20140929204105) do
     t.datetime "updated_at"
   end
 
-  add_index "circles", ["admin_id"], name: "index_circles_on_admin_id", using: :btree
+  add_index "circles", ["admin_id"], :name => "index_circles_on_admin_id"
 
   create_table "commitments", force: true do |t|
     t.float    "amount"
@@ -65,8 +66,8 @@ ActiveRecord::Schema.define(version: 20140929204105) do
     t.datetime "updated_at"
   end
 
-  add_index "commitments", ["post_id"], name: "index_commitments_on_post_id", using: :btree
-  add_index "commitments", ["user_id"], name: "index_commitments_on_user_id", using: :btree
+  add_index "commitments", ["post_id"], :name => "index_commitments_on_post_id"
+  add_index "commitments", ["user_id"], :name => "index_commitments_on_user_id"
 
   create_table "join_requests", force: true do |t|
     t.integer  "circle_id"
@@ -76,8 +77,8 @@ ActiveRecord::Schema.define(version: 20140929204105) do
     t.datetime "updated_at"
   end
 
-  add_index "join_requests", ["circle_id"], name: "index_join_requests_on_circle_id", using: :btree
-  add_index "join_requests", ["user_id"], name: "index_join_requests_on_user_id", using: :btree
+  add_index "join_requests", ["circle_id"], :name => "index_join_requests_on_circle_id"
+  add_index "join_requests", ["user_id"], :name => "index_join_requests_on_user_id"
 
   create_table "post_users", force: true do |t|
     t.integer  "post_id"
@@ -86,17 +87,15 @@ ActiveRecord::Schema.define(version: 20140929204105) do
     t.datetime "updated_at"
   end
 
-  add_index "post_users", ["post_id"], name: "index_post_users_on_post_id", using: :btree
-  add_index "post_users", ["user_id"], name: "index_post_users_on_user_id", using: :btree
+  add_index "post_users", ["post_id"], :name => "index_post_users_on_post_id"
+  add_index "post_users", ["user_id"], :name => "index_post_users_on_user_id"
 
   create_table "posts", force: true do |t|
     t.integer  "circle_id"
     t.integer  "creator_id"
     t.datetime "time"
-    t.float    "latitude"
-    t.float    "longitude"
     t.integer  "pace"
-    t.text     "notes",        default: ""
+    t.text     "notes",                                                                 default: ""
     t.boolean  "complete"
     t.float    "min_amt"
     t.integer  "age_pref"
@@ -106,10 +105,11 @@ ActiveRecord::Schema.define(version: 20140929204105) do
     t.string   "address"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.spatial  "location",     limit: {:srid=>4326, :type=>"point", :geographic=>true}
   end
 
-  add_index "posts", ["circle_id"], name: "index_posts_on_circle_id", using: :btree
-  add_index "posts", ["creator_id"], name: "index_posts_on_creator_id", using: :btree
+  add_index "posts", ["circle_id"], :name => "index_posts_on_circle_id"
+  add_index "posts", ["creator_id"], :name => "index_posts_on_creator_id"
 
   create_table "users", force: true do |t|
     t.string   "first_name"
@@ -131,6 +131,6 @@ ActiveRecord::Schema.define(version: 20140929204105) do
     t.datetime "updated_at"
   end
 
-  add_index "wallets", ["user_id"], name: "index_wallets_on_user_id", using: :btree
+  add_index "wallets", ["user_id"], :name => "index_wallets_on_user_id"
 
 end

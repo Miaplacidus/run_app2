@@ -1,11 +1,14 @@
 class Post < ActiveRecord::Base
   has_many :commitments
   has_one :challenge
-  # differentiate between creator and committers
+  # differentiating between the organizer/creator of the run and joiners
   belongs_to :creator, class_name:"User", foreign_key:"creator_id"
   has_many :post_users
   has_many :users, :through => :post_users
   belongs_to :circle
+
+  set_rgeo_factory_for_column(:location,
+    RGeo::Geographic.spherical_factory(:srid => 4326))
 
   scope :belongs_to_user, lambda { |user_id| user_posts = Post.where(Commitments.where(user_id: user_id).pluck(:post_id))
     one_hour = 3600

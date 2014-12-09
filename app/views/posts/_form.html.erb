@@ -4,7 +4,6 @@
     <h4 class="modal-title" id="myModalLabel">Schedule a Run</h4>
   </div>
   <div class="modal-body">
-
     <% gender = "" %>
       <% if current_user.gender == 0 %>
         <% gender = "none" %>
@@ -99,6 +98,5 @@
         <%= f.submit "Create Run", :class => "btn btn-primary" %>
       </div>
     <% end %>
-
   </div>
 </div>
