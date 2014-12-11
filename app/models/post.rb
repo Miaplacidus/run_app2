@@ -31,7 +31,7 @@ class Post < ActiveRecord::Base
 
   scope :filter_by_age, lambda { |filters| filter_by_gender_and_location(filters).where(age_pref: user_age_pref) }
   scope :filter_by_pace, lambda { |filters| filter_by_gender_and_location(filters).where(pace: filters[:pace]) }
-  scope :filter_by_time, lambda { |start_time, end_time, filters| filter_by_gender_and_location(filters).where("time > ? AND time < ?", start_time, end_time) }
+  scope :filter_by_time, lambda { |filters| filter_by_gender_and_location(filters).where("time > ? AND time < ?", filters[:start_time], filters[:end_time]) }
 end
 
 =begin

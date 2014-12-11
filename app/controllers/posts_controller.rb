@@ -1,7 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :check_gender, only: [:index]
-  before_action
 
   # GET /posts
   # GET /posts.json
@@ -40,8 +39,7 @@ class PostsController < ApplicationController
 
         zone = Time.zone.now.utc
 
-        result = RunPal::FilterPostsByTime.run({user_id: session[:user_id], start_time: starting, end_time: ending, radius: params[:radius], gender_pref: params[:gender_pref], user_lat: test_location[0], user_long: test_location[1]})
-        @posts = result.post_arr
+        Post.filter_by_time(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon], start_time: starting, end_time: ending)
     end
 
     respond_to do |format|

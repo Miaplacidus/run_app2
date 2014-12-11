@@ -44,6 +44,9 @@ GEM
       rack (>= 0.9.0)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
+    browser-timezone-rails (0.0.7)
+      jquery-rails
+      rails (>= 3.1)
     builder (3.2.2)
     capybara (2.4.3)
       mime-types (>= 1.16)
@@ -260,6 +263,7 @@ DEPENDENCIES
   awesome_print
   better_errors
   bootstrap-sass
+  browser-timezone-rails
   capybara
   capybara-screenshot
   coffee-rails (~> 4.0.0)
