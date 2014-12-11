@@ -4,15 +4,6 @@
     <h4 class="modal-title" id="myModalLabel">Schedule a Run</h4>
   </div>
   <div class="modal-body">
-    <% gender = "" %>
-      <% if current_user.gender == 0 %>
-        <% gender = "none" %>
-      <% elsif current_user.gender == 1 %>
-        <% gender = "Women" %>
-      <% else %>
-        <% gender = "Men" %>
-    <% end %>
-
     <% months = [] %>
     <% month_nums = [] %>
     <% (Time.now.month..Time.now.month+6).each do |num| %>
@@ -70,7 +61,7 @@
 
       <div class="field">
         <%= f.label :gender_preference %>
-        <%= f.select(:gender_pref, options_for_select([["Mixed Gender Run", 0], [gender + "'s Run", current_user.gender]], 0)) %>
+        <%= f.select(:gender_pref, options_for_select([["Mixed Gender Run", 0], [get_gender(current_user.gender) + "'s Run", current_user.gender]], 0)) %>
       </div>
 
       <div class="field">

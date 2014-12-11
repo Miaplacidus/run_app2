@@ -1,0 +1,4 @@
+$(document).ready(function(){
+  $('.post_filters_results').empty();
+  $('.post_filters_results').html("<%= escape_javascript(render '_filters_results') %>")
+});

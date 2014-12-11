@@ -18,9 +18,9 @@ class Post < ActiveRecord::Base
     where(creator_id: user_id).where('time < ?', 1.hour.ago)
   }
 
-# filters = {user_lat, user_long, radius, gender_pref, user_id}
+# filters = {user_lat, user_lon, radius, gender_pref, user_id}
   scope :filter_by_gender_and_location, lambda { |filters|
-    nearby_runs = where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_long], filters[:user_lat], filters[:radius])
+    nearby_runs = where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon], filters[:user_lat], filters[:radius])
 
     if filters[:gender_pref] == 3
       nearby_runs.where("gender_pref == 0 OR gender_pref == ?", User.find(filters[:user_id]).gender)
@@ -29,8 +29,8 @@ class Post < ActiveRecord::Base
     end
   }
 
-  scope :filter_by_age, lambda { |user_age_pref, filters| filter_by_gender_and_location(filters).where(age_pref: user_age_pref) }
-  scope :filter_by_pace, lambda { |user_pace, filters| filter_by_gender_and_location(filters).where(pace: user_pace) }
+  scope :filter_by_age, lambda { |filters| filter_by_gender_and_location(filters).where(age_pref: user_age_pref) }
+  scope :filter_by_pace, lambda { |filters| filter_by_gender_and_location(filters).where(pace: filters[:pace]) }
   scope :filter_by_time, lambda { |start_time, end_time, filters| filter_by_gender_and_location(filters).where("time > ? AND time < ?", start_time, end_time) }
 end
 

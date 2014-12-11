@@ -1,23 +1,12 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :check_gender, only: [:index]
+  before_action
 
   # GET /posts
   # GET /posts.json
   def index
-    case params[:filter_select]
-      when "0"
-        # gender and location filtering, default radius is 10 km
-        Post.where(gender_pref: params[:gender_pref], )
-      when "1"
-        # pace filtering with gender and location
-      when "2"
-        # age filtering with gender and location
-      when "3"
-        # time filtering with gender and location
-      else
-        # just filter by gender and location
-    end
+    @post = Post.new
   end
 
   # GET /posts/1
@@ -25,6 +14,40 @@ class PostsController < ApplicationController
   def show
   end
 
+  def filter
+    case params[:filter_select]
+      when "0"
+        # gender and location filtering, default radius is 10 km
+        Post.filter_by_gender_and_location(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon])
+      when "1"
+        # pace filtering with gender and location
+        Post.filter_by_pace(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon], pace: params[:pace])
+      when "2"
+        # age filtering with gender and location
+        Post.filter_by_age(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon], age: params[:age_pref])
+      when "3"
+        # time filtering with gender and location
+        start_date = params[:start_time][:day] + '/' + params[:start_time][:month] + '/' + params[:start_time][:year]
+        start_hour = params[:start_time][:hour] + ":00"
+        start_time = start_date + " " + start_hour
+
+        end_date = params[:end_time][:day] + '/' + params[:end_time][:month] + '/' + params[:end_time][:year]
+        end_hour = params[:end_time][:hour] + ":00"
+        end_time = end_date + " " + end_hour
+
+        starting = Time.zone.parse(start_time).utc
+        ending = Time.zone.parse(end_time).utc
+
+        zone = Time.zone.now.utc
+
+        result = RunPal::FilterPostsByTime.run({user_id: session[:user_id], start_time: starting, end_time: ending, radius: params[:radius], gender_pref: params[:gender_pref], user_lat: test_location[0], user_long: test_location[1]})
+        @posts = result.post_arr
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
   # GET /posts/new
   def new
     @post = Post.new
@@ -67,7 +90,6 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
-
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }

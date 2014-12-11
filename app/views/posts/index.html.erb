@@ -4,7 +4,7 @@
 <p>Find me in app/views/posts/index.html.erb</p>
 
 <!-- Button trigger modal -->
-  <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#postcreatemodal">
+<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#postcreatemodal">
   Create a Run
 </button>
 
@@ -15,5 +15,29 @@
   </div>
 </div>
 
+<!-- Filters -->
+<div id='post_filters'>
+  <%= form_tag({:action => 'filter'}, {:method => 'get', :remote => true, :id => "post_filters_form"}) do %>
+    <!-- Search Radius -->
+    <%= select_tag(:radius, options_for_select([["1 mi", 1], ["5 mi", 5], ["10 mi",10], ["15 mi",15], ["20 mi",20]]), {:id => "radius_select"}) %>
+    <!-- Gender Preference -->
+    <%= select_tag(:gender_pref, options_for_select([["Mixed Gender Runs", 0], [ get_gender(current_user.gender) + "'s Runs", current_user.gender], ["Mixed and " + get_gender(current_user.gender) + "'s Runs", 3]], 3), {:id => "gender_select"} ) %>
+    <!-- Filter Selection -->
+    <%= select_tag(:filter_select, options_for_select([["None", 0],["Pace", 1], ["Age", 2], ["Time", 3]])) %>
+    <!-- Pace Preference -->
+    <%= select_tag(:pace, options_for_select([["All Levels", 0], [ "Military 6 min/mi ", 1], ["Advanced 6-7 min/mi", 2], ["High Intermediate 7-8 min/mi", 3], ["Intermediate 8-9 min/mi", 4], ["Beginner 9-10 min/mi", 5], ["Jogger 10-11 min/mi", 6], ["Speedwalker 11-12 min/mi", 7], ["Sprints 12+ min/mi", 8] ]), {:id => "pace_select"} ) %>
+    <!-- Age Preference -->
+    <%= select_tag(:age_pref, options_for_select([[" ", 0], ["Your age group", 1]]), {:id => "age_select"} ) %>
+    <!-- Time Preference -->
+    <div id="time_select">
+      <%= select_datetime Date.today, prefix: :start_time, :discard_year => true, :discard_minute => true,:ampm => true %> </br>
+      <%= select_datetime Date.tomorrow, prefix: :end_time, :discard_minute => true, :start_year => Time.now.year, :end_year => Time.now.year.next, :ampm => true %>
+      <%= submit_tag("Search", :class => 'btn btn-default')%>
+    </div>
+  <% end %>
+</div>
 
-
+<!-- Filter results -->
+<div class="post_filters_results">
+  <%= render :partial => "filters_results" %>
+</div>
