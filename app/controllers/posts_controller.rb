@@ -27,17 +27,15 @@ class PostsController < ApplicationController
       when "3"
         # time filtering with gender and location
         start_date = params[:start_time][:day] + '/' + params[:start_time][:month] + '/' + params[:start_time][:year]
-        start_hour = params[:start_time][:hour] + ":00"
+        start_hour = params[:start_time][:hour] + ':' + params[:start_time][:minute]
         start_time = start_date + " " + start_hour
 
         end_date = params[:end_time][:day] + '/' + params[:end_time][:month] + '/' + params[:end_time][:year]
-        end_hour = params[:end_time][:hour] + ":00"
+        end_hour = params[:end_time][:hour] + ':' + params[:start_time][:minute]
         end_time = end_date + " " + end_hour
 
         starting = Time.zone.parse(start_time).utc
         ending = Time.zone.parse(end_time).utc
-
-        zone = Time.zone.now.utc
 
         Post.filter_by_time(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon], start_time: starting, end_time: ending)
     end

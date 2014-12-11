@@ -2,7 +2,10 @@
 
 <h1>Posts#index</h1>
 <p>Find me in app/views/posts/index.html.erb</p>
-
+<p><%= Time.zone %></p>
+<p><%= Time.zone.now %></p>
+<p><%= Time.now.utc %> </p>
+<p><%= Time.zone.parse("2014-12-11 16:44").utc %></p>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#postcreatemodal">
@@ -31,9 +34,9 @@
     <%= select_tag(:age_pref, options_for_select([[" ", 0], ["Your age group", 1]]), {:id => "age_select"} ) %>
     <!-- Time Preference -->
     <div id="time_select">
-      <%= select_datetime Date.today, prefix: :start_time, :discard_year => true, :discard_minute => true,:ampm => true %> </br>
-      <%= select_datetime Date.tomorrow, prefix: :end_time, :discard_minute => true, :start_year => Time.now.year, :end_year => Time.now.year.next, :ampm => true %>
-      <%= submit_tag("Search", :class => 'btn btn-default')%>
+      <%= select_datetime Date.today, prefix: :start_time, :minute_step => 15, :discard_year => true,:ampm => true %> </br>
+      <%= select_datetime Date.tomorrow, prefix: :end_time, :minute_step => 15, :start_year => Time.now.year, :end_year => Time.now.year.next, :ampm => true %>
+      <%= submit_tag("Search", :class => 'btn btn-default btn-xs')%>
     </div>
   <% end %>
 </div>
