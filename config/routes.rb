@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :wallets
 
   resources :posts
-  match 'posts/filter', to: 'posts#filter', via: [:get]
+  get 'posts/filter', to: 'posts#filter'
 
   resources :join_requests
 

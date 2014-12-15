@@ -1,37 +1,28 @@
 class Post < ActiveRecord::Base
   has_many :commitments
   has_one :challenge
-  # differentiating between the organizer/creator of the run and joiners
-  belongs_to :creator, class_name:"User", foreign_key:"creator_id"
+  belongs_to :organizer, class_name:"User", foreign_key:"organizer_id"
   has_many :post_users
   has_many :users, :through => :post_users
   belongs_to :circle
 
-  set_rgeo_factory_for_column(:location,
-    RGeo::Geographic.spherical_factory(:srid => 4326))
-
-  scope :upcoming_user_runs, lambda { |user_id|
-    where(Commitment.where(user_id: user_id).pluck(:post_id)).where('time < ?', 1.hour.ago)
-  }
-
-  scope :upcoming_admin_runs, lambda { |user_id|
-    where(creator_id: user_id).where('time < ?', 1.hour.ago)
-  }
+  set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
+  scope :upcoming_user_runs, -> (user_id) { where(Commitment.where(user_id: user_id).pluck(:post_id)).where('time < ?', 1.hour.ago) }
+  scope :upcoming_admin_runs, -> (user_id) { where(creator_id: user_id).where('time < ?', 1.hour.ago) }
 
 # filters = {user_lat, user_lon, radius, gender_pref, user_id}
-  scope :filter_by_gender_and_location, lambda { |filters|
-    nearby_runs = where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon], filters[:user_lat], filters[:radius])
-
+  scope :filter_by_gender, -> (filters) {
     if filters[:gender_pref] == 3
-      nearby_runs.where("gender_pref == 0 OR gender_pref == ?", User.find(filters[:user_id]).gender)
+      where("gender_pref == 0 OR gender_pref == ?", User.find(filters[:user_id]).gender)
     else
-      nearby_runs.where("gender_pref == ?", User.find(filters[:user_id]).gender)
+      where("gender_pref == ?", User.find(filters[:user_id]).gender)
     end
   }
 
-  scope :filter_by_age, lambda { |filters| filter_by_gender_and_location(filters).where(age_pref: user_age_pref) }
-  scope :filter_by_pace, lambda { |filters| filter_by_gender_and_location(filters).where(pace: filters[:pace]) }
-  scope :filter_by_time, lambda { |filters| filter_by_gender_and_location(filters).where("time > ? AND time < ?", filters[:start_time], filters[:end_time]) }
+  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon], filters[:user_lat], filters[:radius]) }
+  scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: user_age_pref) }
+  scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace]) }
+  scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }
 end
 
 =begin

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208173107) do
+ActiveRecord::Schema.define(version: 20141212174157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,14 +45,13 @@ ActiveRecord::Schema.define(version: 20141208173107) do
   create_table "circles", force: true do |t|
     t.string   "name"
     t.integer  "max_members"
-    t.float    "latitude"
-    t.float    "longitude"
     t.text     "description"
     t.integer  "level"
     t.string   "city"
     t.integer  "admin_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.spatial  "location",    limit: {:srid=>4326, :type=>"point", :geographic=>true}
   end
 
   add_index "circles", ["admin_id"], :name => "index_circles_on_admin_id"
@@ -92,7 +91,7 @@ ActiveRecord::Schema.define(version: 20141208173107) do
 
   create_table "posts", force: true do |t|
     t.integer  "circle_id"
-    t.integer  "creator_id"
+    t.integer  "organizer_id"
     t.datetime "time"
     t.integer  "pace"
     t.text     "notes",                                                                 default: ""
@@ -109,7 +108,7 @@ ActiveRecord::Schema.define(version: 20141208173107) do
   end
 
   add_index "posts", ["circle_id"], :name => "index_posts_on_circle_id"
-  add_index "posts", ["creator_id"], :name => "index_posts_on_creator_id"
+  add_index "posts", ["organizer_id"], :name => "index_posts_on_organizer_id"
 
   create_table "users", force: true do |t|
     t.string   "first_name"

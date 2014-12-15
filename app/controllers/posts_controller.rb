@@ -13,6 +13,8 @@ class PostsController < ApplicationController
   def show
   end
 
+# TODO: Write tests around refactoring
+# TODO: Break the case into methods
   def filter
     case params[:filter_select]
       when "0"
@@ -43,6 +45,9 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+
+  def time
   end
   # GET /posts/new
   def new
