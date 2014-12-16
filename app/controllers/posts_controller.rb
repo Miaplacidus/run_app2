@@ -10,22 +10,21 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   # GET /posts/1.json
-  def show
-  end
 
 # TODO: Write tests around refactoring
 # TODO: Break the case into methods
   def filter
+    params.merge!(user_id: session[:user_id])
     case params[:filter_select]
       when "0"
         # gender and location filtering, default radius is 10 km
-        Post.filter_by_gender_and_location(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon])
+        @posts = Post.filter_by_gender(post_filter_params).filter_by_location(post_filter_params)
       when "1"
         # pace filtering with gender and location
-        Post.filter_by_pace(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon], pace: params[:pace])
+        @posts = Post.filter_by_pace(post_filter_params)
       when "2"
         # age filtering with gender and location
-        Post.filter_by_age(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon], age: params[:age_pref])
+        @posts = Post.filter_by_age(post_filter_params)
       when "3"
         # time filtering with gender and location
         start_date = params[:start_time][:day] + '/' + params[:start_time][:month] + '/' + params[:start_time][:year]
@@ -36,15 +35,13 @@ class PostsController < ApplicationController
         end_hour = params[:end_time][:hour] + ':' + params[:start_time][:minute]
         end_time = end_date + " " + end_hour
 
-        starting = Time.zone.parse(start_time).utc
-        ending = Time.zone.parse(end_time).utc
+        params[:start_time] = Time.zone.parse(start_time).utc
+        params[:end_time] = Time.zone.parse(end_time).utc
 
-        Post.filter_by_time(user_id: session[:user_id], radius: params[:radius], gender_pref: params[:gender_pref], user_lat: params[:user_lat], user_lon: params[:user_lon], start_time: starting, end_time: ending)
+        @posts = Post.filter_by_time(post_filter_params)
     end
 
-    respond_to do |format|
-      format.js
-    end
+    render json: @posts
   end
 
   def time
@@ -106,7 +103,11 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:circle_id, :creator_id, :time, :latitude, :longitude, :pace, :notes, :complete, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address)
+      params.require(:post).permit(:circle_id, :creator_id, :latitude, :longitude, :pace, :notes, :complete, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address)
+    end
+
+    def post_filter_params
+      params.permit(:user_id, :radius, :gender_pref, :user_lat, :user_lon, :start_time, :end_time, :pace, :age)
     end
 
     def check_gender

@@ -13,13 +13,15 @@ class Post < ActiveRecord::Base
 # filters = {user_lat, user_lon, radius, gender_pref, user_id}
   scope :filter_by_gender, -> (filters) {
     if filters[:gender_pref] == 3
-      where("gender_pref == 0 OR gender_pref == ?", User.find(filters[:user_id]).gender)
+      where("gender_pref = ? OR gender_pref = ?", 0, User.genders[ User.find(filters[:user_id]).gender.to_sym ])
+    elsif filters[:gender_pref] == 0
+      where("gender_pref = 0")
     else
-      where("gender_pref == ?", User.find(filters[:user_id]).gender)
+      where("gender_pref = ?", User.genders[ User.find(filters[:user_id]).gender.to_sym ] )
     end
   }
 
-  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon], filters[:user_lat], filters[:radius]) }
+  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*1609.34) }
   scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: user_age_pref) }
   scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace]) }
   scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }

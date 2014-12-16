@@ -30,7 +30,7 @@ $(document).ready(function(){
       type: "GET",
       url: "/posts/filter.js",
       data: $("#post_filters_form").serialize() + "&user_lat=" + user_lat + "&user_lon=" + user_lon,
-      success : function(text) {
+      success : function(json) {
         // alert('success');
         // console.log(text);
       }

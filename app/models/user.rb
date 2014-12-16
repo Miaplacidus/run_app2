@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :posts, :through => :post_users
   has_one :wallet
 
-  enum gender: [:female, :male, :unspecified]
+  enum gender: [:unspecified, :female, :male]
   validates_uniqueness_of :email
 
   scope :committed_to_run, -> (post_id) { where(Post.where(id: post_id).first.commitments.pluck(:user_id)) }
