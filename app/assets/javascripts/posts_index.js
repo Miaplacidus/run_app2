@@ -30,9 +30,18 @@ $(document).ready(function(){
       type: "GET",
       url: "/posts/filter.js",
       data: $("#post_filters_form").serialize() + "&user_lat=" + user_lat + "&user_lon=" + user_lon,
+      dataType: 'json',
       success : function(json) {
-        // alert('success');
-        // console.log(text);
+        $('.post_filters_results').empty();
+        for (var key in json) {
+          if (json.hasOwnProperty(key)) {
+            console.log(key);
+            for (var post_attr in json[key]) {
+              console.log(post_attr + " -> " + json[key][post_attr]);
+              $('.post_filters_results').append("<p>" + post_attr + " -> " +json[key][post_attr] + "<p>")
+            }
+          }
+        }
       }
     });
   });
