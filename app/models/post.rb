@@ -1,4 +1,28 @@
 class Post < ActiveRecord::Base
+  PACE_LEVELS = {
+    0 => "All/Any levels",
+    1 => "Military: 6 min and under/mile",
+    2 => "Advanced: 6-7 min/mi",
+    3 => "High Intermediate: 7-8 min/mi",
+    4 => "Intermediate: 8-9 min/mi",
+    5 => "Beginner: 9-10 min/mi",
+    6 => "Jogger: 10-11 min/mi",
+    7 => "Speedwalker: 11-12 min/mi",
+    8 => "Sprints: 12+ min/mi"
+  }
+
+  AGE_PREFERENCES = {
+    0 => "No preference",
+    1 => "18-22",
+    2 => "23-29",
+    3 => "30-39",
+    4 => "40-49",
+    5 => "50-59",
+    6 => "60-69",
+    7 => "70-79",
+    8 => "80+"
+  }
+
   has_many :commitments
   has_one :challenge
   belongs_to :organizer, class_name:"User", foreign_key:"organizer_id"
@@ -25,35 +49,21 @@ class Post < ActiveRecord::Base
   scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: user_age_pref) }
   scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace]) }
   scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }
+
+  def pace_title
+    PACE_LEVELS[pace]
+  end
+
+  def age_preference
+    AGE_PREFERENCES[age_pref]
+  end
 end
 
 =begin
-PACE LEVELS
-0 - All/Any levels
-1 - Military: 6 min and under/mile
-2 - Advanced: 6-7 min/mi
-3 - High Intermediate: 7-8 min/mi
-4 - Intermediate: 8-9 min/mi
-5 - Beginner: 9-10 min/mi
-6 - Jogger: 10-11 min/mi
-7 - Speedwalker: 11-12 min/mi
-8 - Sprints: 12+ min/mi
-
 GENDER PREFERENCES
 0 - BOTH
 1 - FEMALE
 2 - MALE
 # Below only used for post sorting purposes
 3 - BOTH USER GENDER AND GENDER NEUTRAL POSTS
-
-AGE PREFERENCES
-0 - No preference
-1 - 18-22
-2 - 23-29
-3 - 30-39
-4 - 40-49
-5 - 50-59
-6 - 60-69
-7 - 70-79
-8 - 80+
 =end

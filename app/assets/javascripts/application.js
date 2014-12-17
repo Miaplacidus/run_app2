@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require browser_timezone_rails/application.js
+//= require lodash
 //= require_tree .

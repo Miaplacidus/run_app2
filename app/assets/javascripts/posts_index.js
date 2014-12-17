@@ -35,10 +35,10 @@ $(document).ready(function(){
         $('.post_filters_results').empty();
         for (var key in json) {
           if (json.hasOwnProperty(key)) {
-            console.log(key);
             for (var post_attr in json[key]) {
               console.log(post_attr + " -> " + json[key][post_attr]);
-              $('.post_filters_results').append("<p>" + post_attr + " -> " +json[key][post_attr] + "<p>")
+              "<li>"
+              $(".post_filters_results").html("yada yada");
             }
           }
         }
@@ -46,4 +46,14 @@ $(document).ready(function(){
     });
   });
 
+success : function(posts) {
+  $('.post_filters_results').empty();
+  _.each(posts, function(post) {
+    var liTemplate = "<li>";
+    liTemplate += post.someprop;
+    liTemplate += "</li>";
+    ...
+    $(".post_filters_results").append(liTemplate);
+  });
+}
 });

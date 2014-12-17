@@ -8,11 +8,8 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
-  # GET /posts/1
-  # GET /posts/1.json
-
-# TODO: Write tests around refactoring
-# TODO: Break the case into methods
+  # TODO: Write tests around refactoring
+  # TODO: Break the case into methods
   def filter
     params.merge!(user_id: session[:user_id])
     case params[:filter_select]
