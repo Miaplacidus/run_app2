@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   end
 
 # Maybe use enums here
-  def get_user_age(id)
+  def age_category
     bday = User.find(id).bday.split('/')
     bday = DateTime.new(bday[2].to_i, bday[0].to_i, bday[1].to_i)
     age = (DateTime.now - bday) / 365.25
@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
       when 80..110
         return 8
       else
-        return nil
+        return 0
     end
   end
 

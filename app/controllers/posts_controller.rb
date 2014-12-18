@@ -104,7 +104,7 @@ class PostsController < ApplicationController
     end
 
     def post_filter_params
-      params.permit(:user_id, :radius, :gender_pref, :user_lat, :user_lon, :start_time, :end_time, :pace, :age)
+      params.permit(:user_id, :radius, :gender_pref, :user_lat, :user_lon, :start_time, :end_time, :pace, :age_pref)
     end
 
     def check_gender

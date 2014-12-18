@@ -14,7 +14,7 @@ $(document).ready(function(){
 
   $('#radius_select, #gender_select').change(function(){
     $('#pace_select, #age_select, #time_select').hide();
-    $('#filter_select').val('0');
+    $('#filter_select, #age_select').val('0');
   });
 
   $('#filter_select').change(function() {

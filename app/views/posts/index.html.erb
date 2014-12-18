@@ -31,7 +31,7 @@
     <!-- Pace Preference -->
     <%= select_tag(:pace, options_for_select([["All Levels", 0], [ "Military 6 min/mi ", 1], ["Advanced 6-7 min/mi", 2], ["High Intermediate 7-8 min/mi", 3], ["Intermediate 8-9 min/mi", 4], ["Beginner 9-10 min/mi", 5], ["Jogger 10-11 min/mi", 6], ["Speedwalker 11-12 min/mi", 7], ["Sprints 12+ min/mi", 8] ]), {:id => "pace_select"} ) %>
     <!-- Age Preference -->
-    <%= select_tag(:age_pref, options_for_select([[" ", 0], ["Your age group", 1]]), {:id => "age_select"} ) %>
+    <%= select_tag(:age_pref, options_for_select([[" ", 0], ["Your age group", current_user.age_category]]), {:id => "age_select"} ) %>
     <!-- Time Preference -->
     <div id="time_select">
       <%= select_datetime Date.today, prefix: :start_time, :minute_step => 15, :discard_year => true,:ampm => true %> </br>
