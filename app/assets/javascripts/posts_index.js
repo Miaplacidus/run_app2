@@ -25,7 +25,10 @@ $(document).ready(function(){
   });
 
 // TODO: Nest geolocation or provide refresh button or loading bar
-  $('#radius_select, #gender_select, #pace_select, #age_select').change(function(){
+  $('#radius_select, #gender_select, #pace_select, #age_select').change(submit_post_filters_form);
+  $('#post_filters_form').submit(submit_post_filters_form);
+
+  function submit_post_filters_form(){
     $.ajax({
       type: "GET",
       url: "/posts/filter.js",
@@ -40,6 +43,6 @@ $(document).ready(function(){
         $(".post_filters_results").append(liTemplate);
       }
     });
-  });
+  }
 
 });
