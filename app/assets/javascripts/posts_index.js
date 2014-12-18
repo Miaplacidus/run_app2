@@ -34,21 +34,11 @@ $(document).ready(function(){
       success : function(json_posts) {
         console.log(json_posts);
         $('.post_filters_results').empty();
-        // _.each(json_posts.posts, function(post){
-        //   var liTemplate = "<ul><li>";
-        //   console.log(post);
-        //   liTemplate +=
-        //   liTemplate += post.pace_title;
-        //   liTemplate += "</li></ul>";
-        //   $(".post_filters_results").append(liTemplate);
-        // });
-        var list = '<% _.forEach(posts, function(post) { %><ul><li><%- post.pace_title %></li></ul><% }); %>';
-        console.log(_.template(list, {"posts": json_posts.posts }));
-
-        // var list = '<% _.forEach(people, function(name) {
-        //   %><li><%- name %></li><%
-        // }); %>';
-        // _.template(list, { 'people': ['fred', 'barney'] });
+        var yay = "<li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: <%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <%- post.circle.name %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.post_users %> -> <%- post.post_users.count %> / <%- post.max_members %></li>"
+        // var list = '<% _.forEach(posts, function(post) { %><ul><li><%- post.pace_title %></li></ul><% }); %>';
+        var list = '<% _.forEach(posts, function(post) { %><ul>' + yay + '</ul><% }); %>';
+        var liTemplate = _.template(list, {"posts": json_posts.posts });
+        $(".post_filters_results").append(liTemplate);
       }
     });
   });

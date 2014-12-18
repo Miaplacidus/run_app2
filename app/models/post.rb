@@ -23,6 +23,12 @@ class Post < ActiveRecord::Base
     8 => "80+"
   }
 
+  GENDER_PREFERENCES = {
+    0 => "Both",
+    1 => "Female",
+    2 => "Male"
+  }
+
   has_many :commitments
   has_one :challenge
   belongs_to :organizer, class_name:"User", foreign_key:"organizer_id"
@@ -56,6 +62,10 @@ class Post < ActiveRecord::Base
 
   def age_preference_range
     AGE_PREFERENCES[age_pref]
+  end
+
+  def gender_preference
+    GENDER_PREFERENCES[gender_pref]
   end
 
   def time_in_tz
