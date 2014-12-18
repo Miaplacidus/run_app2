@@ -1,4 +1,6 @@
 class Post < ActiveRecord::Base
+  # consider using arrays/ enums
+  # Change class name to scheduled_runs or event
   PACE_LEVELS = {
     0 => "All/Any levels",
     1 => "Military: 6 min and under/mile",
@@ -25,15 +27,15 @@ class Post < ActiveRecord::Base
 
   GENDER_PREFERENCES = {
     0 => "Both",
-    1 => "Female",
-    2 => "Male"
+    1 => "Women Only",
+    2 => "Men Only"
   }
 
   has_many :commitments
   has_one :challenge
   belongs_to :organizer, class_name:"User", foreign_key:"organizer_id"
-  has_many :post_users
-  has_many :users, :through => :post_users
+  # has_many :post_users
+  # has_many :users, :through => :post_users
   belongs_to :circle
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
@@ -42,12 +44,12 @@ class Post < ActiveRecord::Base
 
 # filters = {user_lat, user_lon, radius, gender_pref, user_id}
   scope :filter_by_gender, -> (filters) {
-    if filters[:gender_pref] == 3
+    if filters[:gender_pref].to_i == 3
       where("gender_pref = ? OR gender_pref = ?", 0, User.genders[ User.find(filters[:user_id]).gender.to_sym ])
-    elsif filters[:gender_pref] == 0
-      where("gender_pref = 0")
+    elsif filters[:gender_pref].to_i == 0
+      where("gender_pref = ?", 0)
     else
-      where("gender_pref = ?", User.genders[ User.find(filters[:user_id]).gender.to_sym ] )
+      where("gender_pref = ?", User.genders[ User.find(filters[:user_id]).gender.to_sym ])
     end
   }
 
@@ -56,6 +58,7 @@ class Post < ActiveRecord::Base
   scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace]) }
   scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }
 
+  scope :get_runners, -> (id) { where( Commitment.where(post_id: id) )}
   def pace_title
     PACE_LEVELS[pace]
   end
@@ -70,6 +73,10 @@ class Post < ActiveRecord::Base
 
   def time_in_tz
     Time.zone.parse(time.to_s).strftime("%a %B %e, %Y at %l:%M%P, %:z") + Time.zone.to_s
+  end
+
+  def runners
+    User.where(id: Commitment.where(post_id: id).pluck(:user_id))
   end
 end
 

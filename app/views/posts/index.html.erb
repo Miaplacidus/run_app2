@@ -25,9 +25,9 @@
     <!-- Search Radius -->
     <%= select_tag(:radius, options_for_select([["1 mi", 1], ["5 mi", 5], ["10 mi",10], ["15 mi",15], ["20 mi",20]]), {:id => "radius_select"}) %>
     <!-- Gender Preference -->
-    <%= select_tag(:gender_pref, options_for_select([["Mixed Gender Runs", 0], [get_gender(current_user.gender) + "'s Runs", current_user.gender], ["Mixed and " + get_gender(current_user.gender) + "'s Runs", 3]], 3), {:id => "gender_select"} ) %>
+    <%= select_tag(:gender_pref, options_for_select([["Mixed Gender Runs", 0], [get_gender(current_user.gender) + "'s Runs", current_user.db_gender], ["Mixed and " + get_gender(current_user.gender) + "'s Runs", 3]], 3), {:id => "gender_select"} ) %>
     <!-- Filter Selection -->
-    <%= select_tag(:filter_select, options_for_select([["None", 0],["Pace", 1], ["Age", 2], ["Time", 3]])) %>
+    <%= select_tag(:filter_select, options_for_select([["None", 0],["Pace", 1], ["Age", 2], ["Time", 3], ["Minimum Commitment", 0]])) %>
     <!-- Pace Preference -->
     <%= select_tag(:pace, options_for_select([["All Levels", 0], [ "Military 6 min/mi ", 1], ["Advanced 6-7 min/mi", 2], ["High Intermediate 7-8 min/mi", 3], ["Intermediate 8-9 min/mi", 4], ["Beginner 9-10 min/mi", 5], ["Jogger 10-11 min/mi", 6], ["Speedwalker 11-12 min/mi", 7], ["Sprints 12+ min/mi", 8] ]), {:id => "pace_select"} ) %>
     <!-- Age Preference -->

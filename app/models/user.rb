@@ -40,6 +40,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def db_gender
+    User.genders[ User.find(id).gender.to_sym ]
+  end
+
 # Maybe use enums here
   def get_user_age(id)
     bday = User.find(id).bday.split('/')

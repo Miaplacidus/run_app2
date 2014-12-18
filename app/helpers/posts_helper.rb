@@ -11,8 +11,4 @@ module PostsHelper
    end
   end
 
-  def get_user_name(user_id)
-
-  end
-
 end

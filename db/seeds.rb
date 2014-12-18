@@ -63,11 +63,11 @@ case Rails.env
         min_amt { [0, 5, 10, 15, 20].sample }
         age_pref { rand(0..8) }
         gender_pref { rand(0..2) }
-        max_runners { [2, 5, 8, 11, 14].sample }
+        max_runners { [3, 5, 8, 11, 14].sample }
         min_distance { [1, 3, 5, 10, 15].sample }
-        sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-7} #{41.9120736 + n*10**-7} )" }
+        sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-2} #{41.9120736 + n*10**-3} )" }
         # address { Geocoder.address([location.latitude, location.longitude]) }
-        address "some address"
+        address "some bloody address"
       end
 
       factory :user, aliases: [:organizer, :admin] do
