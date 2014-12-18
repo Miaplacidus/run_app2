@@ -57,6 +57,10 @@ class Post < ActiveRecord::Base
   def age_preference_range
     AGE_PREFERENCES[age_pref]
   end
+
+  def time_in_tz
+    Time.zone.parse(time.to_s).strftime("%a %B %e, %Y at %l:%M%P, %:z") + Time.zone.to_s
+  end
 end
 
 =begin

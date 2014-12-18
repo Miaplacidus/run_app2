@@ -31,16 +31,24 @@ $(document).ready(function(){
       url: "/posts/filter.js",
       data: $("#post_filters_form").serialize() + "&user_lat=" + user_lat + "&user_lon=" + user_lon,
       dataType: 'json',
-      success : function(heys) {
-        console.log(heys);
+      success : function(json_posts) {
+        console.log(json_posts);
         $('.post_filters_results').empty();
-        _.each(heys.posts, function(post){
-          var liTemplate = "<li>";
-          console.log(post);
-          liTemplate += post.pace_title;
-          liTemplate += "</li>";
-          $(".post_filters_results").append(liTemplate);
-        });
+        // _.each(json_posts.posts, function(post){
+        //   var liTemplate = "<ul><li>";
+        //   console.log(post);
+        //   liTemplate +=
+        //   liTemplate += post.pace_title;
+        //   liTemplate += "</li></ul>";
+        //   $(".post_filters_results").append(liTemplate);
+        // });
+        var list = '<% _.forEach(posts, function(post) { %><ul><li><%- post.pace_title %></li></ul><% }); %>';
+        console.log(_.template(list, {"posts": json_posts.posts }));
+
+        // var list = '<% _.forEach(people, function(name) {
+        //   %><li><%- name %></li><%
+        // }); %>';
+        // _.template(list, { 'people': ['fred', 'barney'] });
       }
     });
   });
