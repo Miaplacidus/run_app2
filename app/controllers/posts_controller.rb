@@ -38,7 +38,7 @@ class PostsController < ApplicationController
         @posts = Post.filter_by_time(post_filter_params)
     end
 
-    render json: @posts
+    render json: @posts, each_serializer: PostSerializer
   end
 
   def time

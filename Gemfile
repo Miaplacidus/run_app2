@@ -4,7 +4,7 @@ ruby "2.1.2"
 gem "rails", "4.1.6"
 
 gem "activerecord-postgis-adapter"
-gem "active_model_serializers"
+gem "active_model_serializers", "~>0.9.0"
 gem "autoprefixer-rails"
 gem "bootstrap-sass"
 gem "browser-timezone-rails"

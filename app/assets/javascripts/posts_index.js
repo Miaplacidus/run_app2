@@ -31,29 +31,18 @@ $(document).ready(function(){
       url: "/posts/filter.js",
       data: $("#post_filters_form").serialize() + "&user_lat=" + user_lat + "&user_lon=" + user_lon,
       dataType: 'json',
-      success : function(json) {
+      success : function(heys) {
+        console.log(heys);
         $('.post_filters_results').empty();
-        for (var key in json) {
-          if (json.hasOwnProperty(key)) {
-            for (var post_attr in json[key]) {
-              console.log(post_attr + " -> " + json[key][post_attr]);
-              "<li>"
-              $(".post_filters_results").html("yada yada");
-            }
-          }
-        }
+        _.each(heys.posts, function(post){
+          var liTemplate = "<li>";
+          console.log(post);
+          liTemplate += post.pace_title;
+          liTemplate += "</li>";
+          $(".post_filters_results").append(liTemplate);
+        });
       }
     });
   });
 
-success : function(posts) {
-  $('.post_filters_results').empty();
-  _.each(posts, function(post) {
-    var liTemplate = "<li>";
-    liTemplate += post.someprop;
-    liTemplate += "</li>";
-    ...
-    $(".post_filters_results").append(liTemplate);
-  });
-}
 });

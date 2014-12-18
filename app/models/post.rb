@@ -54,7 +54,7 @@ class Post < ActiveRecord::Base
     PACE_LEVELS[pace]
   end
 
-  def age_preference
+  def age_preference_range
     AGE_PREFERENCES[age_pref]
   end
 end
