@@ -16,7 +16,7 @@
 
     <% month_nums.each {|m| months << [Date::MONTHNAMES[m], m]} %>
 
-    <%= form_for(@post, remote: true) do |f| %>
+    <%= form_for(@post, {:action => :create, :method => 'post', :remote => true}) do |f| %>
       <% if @post.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -30,7 +30,7 @@
       <% end %>
 
       <div class="field">
-        <%= f.hidden_field :creator_id, :value => current_user.id %>
+        <%= f.hidden_field :organizer_id, :value => current_user.id %>
         <%= f.hidden_field :complete, :value => false %>
       </div>
 
@@ -61,12 +61,12 @@
 
       <div class="field">
         <%= f.label :gender_preference %>
-        <%= f.select(:gender_pref, options_for_select([["Mixed Gender Run", 0], [get_gender(current_user.gender) + "'s Run", current_user.gender]], 0)) %>
+        <%= f.select(:gender_pref, options_for_select([["Mixed Gender Run", 0], [get_gender(current_user.gender) + "'s Run", current_user.db_gender]], 0)) %>
       </div>
 
       <div class="field">
         <%= f.label :age_group %>
-        <%= f.select(:age_pref, options_for_select([["None", 0], ["Your age group", 1]])) %>
+        <%= f.select(:age_pref, options_for_select([["None", 0], ["Your age group", current_user.age_category]])) %>
       </div>
 
       <div class="field">
