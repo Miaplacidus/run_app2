@@ -66,8 +66,7 @@ case Rails.env
         max_runners { [3, 5, 8, 11, 14].sample }
         min_distance { [1, 3, 5, 10, 15].sample }
         sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-2} #{41.9120736 + n*10**-3} )" }
-        # address { Geocoder.address([location.latitude, location.longitude]) }
-        address "some bloody address"
+        after(:create) { |post| post.update(address: Geocoder.address([post.location.latitude, post.location.longitude])) }
       end
 
       factory :user, aliases: [:organizer, :admin] do
