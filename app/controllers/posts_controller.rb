@@ -9,21 +9,16 @@ class PostsController < ApplicationController
   end
 
   # TODO: Write tests around refactoring
-  # TODO: Break the case into methods
   def filter
     params.merge!(user_id: session[:user_id])
     case params[:filter_select]
-      when "0"
-        # gender and location filtering, default radius is 10 km
+      when gender_and_location_filter
         @posts = Post.filter_by_gender(post_filter_params).filter_by_location(post_filter_params)
-      when "1"
-        # pace filtering with gender and location
+      when pace_filter
         @posts = Post.filter_by_pace(post_filter_params)
-      when "2"
-        # age filtering with gender and location
+      when age_filter
         @posts = Post.filter_by_age(post_filter_params)
-      when "3"
-        # time filtering with gender and location
+      when time_filter
         start_date = params[:start_time][:day] + '/' + params[:start_time][:month] + '/' + params[:start_time][:year]
         start_hour = params[:start_time][:hour] + ':' + params[:start_time][:minute]
         start_time = start_date + " " + start_hour
@@ -36,13 +31,14 @@ class PostsController < ApplicationController
         params[:end_time] = Time.zone.parse(end_time).utc
 
         @posts = Post.filter_by_time(post_filter_params)
+      when commitment_filter
+
     end
 
     render json: @posts, each_serializer: PostSerializer
   end
 
-  def time
-  end
+
   # GET /posts/new
   def new
     @post = Post.new
@@ -55,18 +51,33 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
+    geo_loc = Geocoder.coordinates(params[:post][:address])
+    puts "LOOK HERE #{geo_loc}"
+    params[:address] = Geocoder.address(geo_loc)
+    params[:location] = "POINT(#{geo_loc[1]} #{geo_loc[0]})"
+
+
+    date = params[:date][:day] + '/' + params[:date][:month] + '/' + params[:date][:year]
+    hour = params[:date][:hour] + ':' + params[:date][:minute]
+    time = date + " " + hour
+    params[:time] = Time.zone.parse(time).utc
+
+    puts "Behold! The ADDRESS: #{params[:address]}"
+    puts "AND ALSO THE LOCATION #{params[:location]}"
+
     @post = Post.new(post_params)
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
+        # format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        # format.json { render :show, status: :created, location: @post }
       else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        # format.html { render :new }
+        # format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
+
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
@@ -100,7 +111,7 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:circle_id, :creator_id, :latitude, :longitude, :pace, :notes, :complete, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address)
+      params.require(:post).permit(:circle_id, :organizer_id, :location, :time, :pace, :notes, :complete, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address)
     end
 
     def post_filter_params
@@ -121,4 +132,26 @@ class PostsController < ApplicationController
         end
       end
     end
+
+    def gender_and_location_filter
+      "0"
+    end
+
+    def pace_filter
+      "1"
+    end
+
+    def age_filter
+      "2"
+    end
+
+    def time_filter
+      "3"
+    end
+
+    def commitment_filter
+      "4"
+    end
+
+
 end
