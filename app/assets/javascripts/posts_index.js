@@ -55,10 +55,10 @@ $(document).ready(function(){
       dataType: 'json',
       success: function(json_post) {
         console.log(json_post.post);
-        var post_info = "<li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li>";
+        var post_info = "<h3>Run Successfully Scheduled</h3><ul><li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li></ul>";
         var liTemplate = _.template(post_info, {"post": json_post.post});
         console.log(liTemplate);
-        $("#postcreatemodal").html(liTemplate);
+        $("#postcreatemodal .modal-body").html(liTemplate);
       }
     });
     // $("#new_post")[0].reset();
