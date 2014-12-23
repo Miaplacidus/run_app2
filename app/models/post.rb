@@ -1,6 +1,7 @@
 class Post < ActiveRecord::Base
-  # consider using arrays/ enums
+  # consider using arrays/ enums with "" in internationalization file
   # Change class name to scheduled_runs or event
+  # TODO: create after save hook to generate address from location after saving
   PACE_LEVELS = {
     0 => "All/Any levels",
     1 => "Military: 6 min and under/mile",
@@ -40,7 +41,7 @@ class Post < ActiveRecord::Base
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
   scope :upcoming_user_runs, -> (user_id) { where(Commitment.where(user_id: user_id).pluck(:post_id)).where('time < ?', 1.hour.ago) }
-  scope :upcoming_admin_runs, -> (user_id) { where(creator_id: user_id).where('time < ?', 1.hour.ago) }
+  scope :upcoming_admin_runs, -> (user_id) { where(organizer_id: user_id).where('time < ?', 1.hour.ago) }
 
 # filters = {user_lat, user_lon, radius, gender_pref, user_id}
   scope :filter_by_gender, -> (filters) {
@@ -52,6 +53,7 @@ class Post < ActiveRecord::Base
       where("gender_pref = ?", User.genders[ User.find(filters[:user_id]).gender.to_sym ])
     end
   }
+# TODO: make filter params more explicit
 
   scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*1609.34) }
   scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: filters[:age_pref].to_i) }

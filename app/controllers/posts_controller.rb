@@ -31,7 +31,7 @@ class PostsController < ApplicationController
         params[:end_time] = Time.zone.parse(end_time).utc
 
         @posts = Post.filter_by_time(post_filter_params)
-      when commitment_filter
+      # when commitment_filter
 
     end
 
@@ -52,30 +52,17 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     geo_loc = Geocoder.coordinates(params[:post][:address])
-    puts "LOOK HERE #{geo_loc}"
-    params[:address] = Geocoder.address(geo_loc)
-    params[:location] = "POINT(#{geo_loc[1]} #{geo_loc[0]})"
+    params[:post][:address] = Geocoder.address(geo_loc)
+    params[:post][:location] = "POINT(#{geo_loc[1]} #{geo_loc[0]})"
 
-
-    date = params[:date][:day] + '/' + params[:date][:month] + '/' + params[:date][:year]
+    date = params[:day][:day] + '/' + params[:month_select] + '/' + params[:year][:year]
     hour = params[:date][:hour] + ':' + params[:date][:minute]
     time = date + " " + hour
-    params[:time] = Time.zone.parse(time).utc
+    params[:post][:time] = Time.zone.parse(time).utc
 
-    puts "Behold! The ADDRESS: #{params[:address]}"
-    puts "AND ALSO THE LOCATION #{params[:location]}"
+    @post = Post.create(post_params)
 
-    @post = Post.new(post_params)
-
-    respond_to do |format|
-      if @post.save
-        # format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        # format.json { render :show, status: :created, location: @post }
-      else
-        # format.html { render :new }
-        # format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
+    render json: @post, serializer: PostSerializer
   end
 
 
@@ -152,6 +139,5 @@ class PostsController < ApplicationController
     def commitment_filter
       "4"
     end
-
 
 end

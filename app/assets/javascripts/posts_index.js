@@ -27,8 +27,10 @@ $(document).ready(function(){
 // TODO: Nest geolocation or provide refresh button or loading bar
   $('#radius_select, #gender_select, #pace_select, #age_select').change(submit_post_filters_form);
   $('#post_filters_form').submit(submit_post_filters_form);
+  $('#new_post').submit(submit_post_create_form);
 
   function submit_post_filters_form(){
+    // missing? event.preventDefault();
     $.ajax({
       type: "GET",
       url: "/posts/filter.js",
@@ -37,12 +39,29 @@ $(document).ready(function(){
       success : function(json_posts) {
         console.log(json_posts);
         $('.post_filters_results').empty();
-        var post_info = "<li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <%- post.circle.name %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li>"
+        var post_info = "<li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li>";
         var list = '<% _.forEach(posts, function(post) { %><ul>' + post_info + '</ul><% }); %>';
         var liTemplate = _.template(list, {"posts": json_posts.posts });
         $(".post_filters_results").append(liTemplate);
       }
     });
+  }
+
+  function submit_post_create_form(){
+    $.ajax({
+      type: "POST",
+      url: "/posts.js",
+      data: $("#new_post").serialize(),
+      dataType: 'json',
+      success: function(json_post) {
+        console.log(json_post.post);
+        var post_info = "<li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li>";
+        var liTemplate = _.template(post_info, {"post": json_post.post});
+        console.log(liTemplate);
+        $("#postcreatemodal").html(liTemplate);
+      }
+    });
+    // $("#new_post")[0].reset();
   }
 
 });

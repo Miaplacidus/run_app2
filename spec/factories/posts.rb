@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :post do
     circle_id 1
-    creator_id 1
+    organizer_id 1
     time "2014-09-29 20:32:51"
     latitude 1.5
     longitude 1.5
