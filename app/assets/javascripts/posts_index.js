@@ -64,4 +64,10 @@ $(document).ready(function(){
     // $("#new_post")[0].reset();
   }
 
+  $('#postcreatemodal').on('hidden.bs.modal', function () {
+    $.get("/posts/get_form", function(data){
+      $("#postcreatemodal .modal-dialog").html(data);
+    });
+  });
+
 });
