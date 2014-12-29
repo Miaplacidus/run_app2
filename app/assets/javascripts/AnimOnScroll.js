@@ -87,7 +87,7 @@
     },
     _init : function() {
       this.items = Array.prototype.slice.call( document.querySelectorAll( '#' + this.el.id + ' > li' ) );
-      console.log('#' + this.el.id + ' > li');
+      console.log(this.items);
       this.itemsCount = this.items.length;
       this.itemsRenderedCount = 0;
       this.didScroll = false;
@@ -98,7 +98,7 @@
 
         // initialize masonry
         new Masonry( self.el, {
-          itemSelector: 'li',
+          itemSelector: 'li.post_box',
           transitionDuration : 0
         } );
 
