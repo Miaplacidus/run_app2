@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js">
 <head>
   <title>Osoanyi</title>
   <%= stylesheet_link_tag    'application', media: 'all'%>
-  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag :modernizr %>
   <%= csrf_meta_tags %>
 </head>
 <body class="container">
@@ -16,7 +16,17 @@
     <% end %>
   </div>
 
-<%= yield %>
+  <%= yield %>
 
+  <%= javascript_include_tag 'application' %>
+  <script type="text/javascript">
+    $( document ).ajaxComplete(function() {
+      new AnimOnScroll( document.getElementById( 'grid' ), {
+        minDuration : 0.4,
+        maxDuration : 0.7,
+        viewportFactor : 0.2
+      } );
+    });
+  </script>
 </body>
 </html>
