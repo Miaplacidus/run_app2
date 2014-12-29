@@ -15,4 +15,5 @@
 //= require bootstrap-sprockets
 //= require browser_timezone_rails/application.js
 //= require lodash
+//= require masonry/jquery.masonry
 //= require_tree .

@@ -1,6 +1,3 @@
-@import "bootstrap-sprockets";
-@import "bootstrap";
-
 .grid {
   max-width: 69em;
   list-style: none;
@@ -8,24 +5,26 @@
   padding: 0;
 }
 
-.grid > li {
+.grid li {
   display: block;
   float: left;
   padding: 7px;
   width: 33%;
   opacity: 0;
-  background-color: orange;
 }
 
-// .grid > li > ul {
-//   display: block;
-//   background-color: green;
-// }
-
-.grid > li.shown,
-.no-js .grid > li,
-.no-cssanimations .grid > li {
+.grid li.shown,
+.no-js .grid li,
+.no-cssanimations .grid li {
   opacity: 1;
+}
+
+.grid li a,
+.grid li img {
+  outline: none;
+  border: none;
+  display: block;
+  max-width: 100%;
 }
 
 /* Effect 1: opacity */
@@ -45,7 +44,7 @@
 }
 
 /* Effect 2: Move Up */
-.grid.effect-2 > li.animate {
+.grid.effect-2 li.animate {
   -webkit-transform: translateY(200px);
   transform: translateY(200px);
   -webkit-animation: moveUp 0.65s ease forwards;
@@ -212,13 +211,13 @@
 }
 
 @media screen and (max-width: 900px) {
-  .grid > li {
+  .grid li {
     width: 50%;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .grid > li {
+  .grid li {
     width: 100%;
   }
 }
