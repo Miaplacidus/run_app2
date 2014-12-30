@@ -39,10 +39,11 @@ $(document).ready(function(){
       success : function(json_posts) {
         console.log(json_posts);
         $('.post_filters_results').empty();
-        var post_info = "<li class='post_box' ><ul><li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li></ul></li>";
+        var post_info = "<li class='post_box'><ul class='post-summary'><li><span class='post-address'><%- post.address %></span></li><li><div id='gmap-container<%-post.id%>' ></div><div id='zoom-in'></div><div id='zoom-out'></div></li><li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li></ul></li>";
         var list = '<% _.forEach(posts, function(post) { %>' + post_info + '<% }); %>';
         var liTemplate = _.template(list, {"posts": json_posts.posts });
         $(".post_filters_results").append('<ul class= "grid effect-2" id="grid">' + liTemplate + '</ul>');
+        setMapValues(json_posts.posts);
       }
     });
   }
@@ -54,10 +55,8 @@ $(document).ready(function(){
       data: $("#new_post").serialize(),
       dataType: 'json',
       success: function(json_post) {
-        console.log(json_post.post);
-        var post_info = "<h3>Run Successfully Scheduled</h3><ul><li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li></ul>";
+        var post_info = "<h3>Run Successfully Scheduled</h3><ul><li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.length %> / <%- post.max_runners %></li></ul>";
         var liTemplate = _.template(post_info, {"post": json_post.post});
-        console.log(liTemplate);
         $("#postcreatemodal .modal-body").html(liTemplate);
       }
     });
@@ -69,5 +68,15 @@ $(document).ready(function(){
       $("#postcreatemodal .modal-dialog").html(data);
     });
   });
+
+  function setMapValues(json_posts){
+    console.log(json_posts);
+    for (var post in json_posts) {
+      var location = json_posts[post].location.match(/(\-?\d{1,}\.\d{1,})\s(\-?\d{1,}\.\d{1,})/);
+      var latitude = location[2];
+      var longitude = location[1];
+      createMap(latitude, longitude, json_posts[post].id);
+    }
+  }
 
 });
