@@ -190,10 +190,10 @@ function createMap(latitude, longitude, postId){
         streetViewControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         scrollwheel: false,
-        styles: style,
+        styles: style
     }
     //inizialize the map
-  var map = new google.maps.Map(document.getElementById('gmap-container' + postId), map_options);
+  var map = new google.maps.Map(document.getElementById('gmaps-container' + postId), map_options);
   //add a custom marker to the map
   var marker = new google.maps.Marker({
       position: new google.maps.LatLng(latitude, longitude),

@@ -37,9 +37,8 @@ $(document).ready(function(){
       data: $("#post_filters_form").serialize() + "&user_lat=" + user_lat + "&user_lon=" + user_lon,
       dataType: 'json',
       success : function(json_posts) {
-        console.log(json_posts);
         $('.post_filters_results').empty();
-        var post_info = "<li class='post_box'><ul class='post-summary'><li><span class='post-address'><%- post.address %></span></li><li><div id='gmap-container<%-post.id%>' ></div><div id='zoom-in'></div><div id='zoom-out'></div></li><li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li></ul></li>";
+        var post_info = "<li class='post_box'><ul class='post-summary'><li><span class='post-address'><%- post.address %></span></li><li><div id='gmaps-container<%-post.id%>' style='position:relative;width:100%;height:200px;background-color:#e7eaf0'></div><div id='zoom-in'></div><div id='zoom-out'></div></li><li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.count %> / <%- post.max_runners %></li></ul></li>";
         var list = '<% _.forEach(posts, function(post) { %>' + post_info + '<% }); %>';
         var liTemplate = _.template(list, {"posts": json_posts.posts });
         $(".post_filters_results").append('<ul class= "grid effect-2" id="grid">' + liTemplate + '</ul>');
@@ -70,11 +69,10 @@ $(document).ready(function(){
   });
 
   function setMapValues(json_posts){
-    console.log(json_posts);
     for (var post in json_posts) {
       var location = json_posts[post].location.match(/(\-?\d{1,}\.\d{1,})\s(\-?\d{1,}\.\d{1,})/);
-      var latitude = location[2];
-      var longitude = location[1];
+      var latitude = parseFloat(location[2]);
+      var longitude = parseFloat(location[1]);
       createMap(latitude, longitude, json_posts[post].id);
     }
   }
