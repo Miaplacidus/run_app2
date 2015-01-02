@@ -42,6 +42,7 @@ $(document).ready(function(){
         var list = '<% _.forEach(posts, function(post) { %>' + post_info + '<% }); %>';
         var liTemplate = _.template(list, {"posts": json_posts.posts });
         $(".post_filters_results").append('<ul class= "grid effect-2" id="grid">' + liTemplate + '</ul>');
+        console.log(json_posts.posts);
         setMapValues(json_posts.posts);
       }
     });
@@ -54,9 +55,10 @@ $(document).ready(function(){
       data: $("#new_post").serialize(),
       dataType: 'json',
       success: function(json_post) {
-        var post_info = "<h3>Run Successfully Scheduled</h3><ul><li><%- post.address %></li> <li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.length %> / <%- post.max_runners %></li></ul>";
+        var post_info = "<h3>Run Successfully Scheduled</h3><ul><li><%- post.address %></li> <li><div id='gmaps-container<%-post.id%>' style='position:relative;width:100%;height:200px;background-color:#e7eaf0'></div><div id='zoom-in'></div><div id='zoom-out'></div></li><li><%- post.time_in_tz %></li> <li><%- post.gender_preference %></li> <li>Pace: <%- post.pace_title %></li> <li>Age Preference: <%- post.age_preference_range %></li> <li>Minimum Distance: <%- post.min_distance %></li> <li>Commitment: $<%- post.min_amt %></li> <li>Notes: <%- post.notes %></li> <li>Associated Circle: <% if (post.circle) { %><%- post.circle.name %> <% } %></li> <li>Organizer: <%- post.organizer.first_name %>, <%- post.organizer.gender %></li> <li>Runners: <%- post.runners %> -> <%- post.runners.length %> / <%- post.max_runners %></li></ul>";
         var liTemplate = _.template(post_info, {"post": json_post.post});
         $("#postcreatemodal .modal-body").html(liTemplate);
+        setMapValues(json_post);
       }
     });
     // $("#new_post")[0].reset();
