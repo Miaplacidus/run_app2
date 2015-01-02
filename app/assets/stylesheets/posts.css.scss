@@ -4,7 +4,8 @@
 
 // Post Index Specific
 .grid {
-  max-width: 69em;
+  // max-width: 69em;
+  max-width: 80em;
   list-style: none;
   margin: 30px auto;
   padding: 0;
@@ -13,20 +14,18 @@
 .grid > li {
   display: block;
   float: left;
-  padding: 7px;
-  // width: 33%;
-  width: 45%;
+  padding: 17px;
+  width: 33%;
   opacity: 0;
-  border-radius: 4%;
-  // background-color: #71495B;
-  // color: #F4BD89;
+  border-radius: 7px;
   color: $raincloud;
-  background-color: $night;
+  color: #173D50;
+  background-color: $tan;
 
 }
 
 .post-address {
-  font-size: 2em;
+  font-size: 1.4em;
   color: $orange-red;
 }
 
@@ -40,14 +39,22 @@ div.gmap-container {
   // length: 200px;
   width: 100%;
   background-color: white;
-  border-radius: 1%;
-  border: solid #7892b2 2px;
+  border-radius: 7px;
+  // border: solid #7892b2 2px;
 }
 
 ul.post-summary {
   list-style: none;
   font-family: 'Capsuula-webfont', sans-serif;
   font-size: 1.4em;
+  padding: 0;
+  background-color: #71B5EC;
+  border-radius: 7px;
+}
+
+.form-control {
+  display: inline;
+  width: 15%;
 }
 
 /* Effect 1: opacity */

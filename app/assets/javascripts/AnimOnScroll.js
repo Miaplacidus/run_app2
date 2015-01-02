@@ -40,6 +40,9 @@
       }
     } while( el = el.offsetParent )
 
+    console.log(offsetTop);
+    console.log(offsetLeft);
+
     return {
       top : offsetTop,
       left : offsetLeft

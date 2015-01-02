@@ -3,13 +3,13 @@
   width: 32px;
   cursor: pointer;
   margin-left: 10px;
-  background-color: rgba($color-2, .9);
+  background-color: rgba($map-red, .9);
   background-repeat: no-repeat;
   background-size: 32px 64px;
   background-image: url('/assets/cd-icon-controller.svg');
 
   .no-touch &:hover {
-    background-color: rgba($color-2, 1);
+    background-color: rgba($map-red, 1);
   }
 }
 

@@ -27,7 +27,7 @@ class Post < ActiveRecord::Base
   }
 
   GENDER_PREFERENCES = {
-    0 => "Both",
+    0 => "Both Women and Men",
     1 => "Women Only",
     2 => "Men Only"
   }
