@@ -18,15 +18,20 @@
   opacity: 0;
   border-radius: 7px;
   color: $gray;
-  background-color: $light-gray;
+  background-color: $moss;
 }
 
 .post-summary h3 {
   font-size: 2.1em;
-  color: #D27175;
+  color: $salmon;
   padding: 7px;
   text-align: center;
   font-family: 'Capsuula-webfont', sans-serif;
+}
+
+.post-summary .fa {
+  color: $moss;
+  font-size: 1.4em;
 }
 
 .grid > li.shown,
@@ -37,9 +42,8 @@
 
 ul.post-summary {
   list-style: none;
-  font-family: 'Ubuntu', sans-serif;
   padding: 0 0 5% 0;
-  background-color: #BCC5B9;
+  background-color: $light-gray;
   border-radius: 7px;
   box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
 }
@@ -51,7 +55,7 @@ ul.post-summary {
 
 .form-control {
   display: inline;
-  width: 15%;
+  width: 22%;
 }
 
 /* Effect 1: opacity */
