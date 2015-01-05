@@ -9,6 +9,7 @@ gem "autoprefixer-rails"
 gem "bootstrap-sass"
 gem "browser-timezone-rails"
 gem "coffee-rails", "~> 4.0.0"
+gem "font-awesome-rails", "~>4.2.0"
 gem "geocoder"
 gem "gmaps4rails"
 gem 'haversine'

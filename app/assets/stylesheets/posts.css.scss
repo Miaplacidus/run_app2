@@ -4,7 +4,6 @@
 
 // Post Index Specific
 .grid {
-  // max-width: 69em;
   max-width: 80em;
   list-style: none;
   margin: 30px auto;
@@ -18,20 +17,15 @@
   width: 33%;
   opacity: 0;
   border-radius: 7px;
-  // color: $raincloud;
-  // color: #173D50;
-  color: #5E5F60;
-  // background-color: $tan;
-  background-color: #899A92;
+  color: $gray;
+  background-color: $light-gray;
 }
 
 .post-summary h3 {
-  // font-size: 1.4em;
-  // color: $orange-red;
-  // color: #ffdb70;
-  // color: #71B5EC;
+  font-size: 2.1em;
   color: #D27175;
-  padding: 5px;
+  padding: 7px;
+  text-align: center;
   font-family: 'Capsuula-webfont', sans-serif;
 }
 
@@ -44,16 +38,15 @@
 ul.post-summary {
   list-style: none;
   font-family: 'Ubuntu', sans-serif;
-  font-size: 1.1em;
-  padding: 0;
-  // background-color: #71B5EC;
+  padding: 0 0 5% 0;
   background-color: #BCC5B9;
   border-radius: 7px;
   box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
 }
 
 .post-summary-contents {
-  padding: 2%;
+  padding: 2% 4% 2% 4%;
+  font-size: 1.2em;
 }
 
 .form-control {

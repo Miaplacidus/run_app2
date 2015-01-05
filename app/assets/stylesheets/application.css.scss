@@ -1,14 +1,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome";
 @import "colors";
 @import "fonts";
 @import "posts";
 @import "gmaps";
 
 body {
-  // background-color: #3E253C;
-  // background-color: #173D50;
-  // background-color: $tan;
-  background-color: #899A92;
+  background-color: $moss;
   padding-top: 50px;
 }
