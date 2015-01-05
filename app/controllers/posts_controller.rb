@@ -31,8 +31,8 @@ class PostsController < ApplicationController
         params[:end_time] = Time.zone.parse(end_time).utc
 
         @posts = Post.filter_by_time(post_filter_params)
-      # when commitment_filter
-
+      when commitment_filter
+        @posts = Post.filter_by_commitment(post_filter_params)
     end
 
     render json: @posts, each_serializer: PostSerializer
@@ -107,7 +107,7 @@ class PostsController < ApplicationController
     end
 
     def post_filter_params
-      params.permit(:user_id, :radius, :gender_pref, :user_lat, :user_lon, :start_time, :end_time, :pace, :age_pref)
+      params.permit(:user_id, :radius, :gender_pref, :user_lat, :user_lon, :start_time, :end_time, :pace, :age_pref, :min_amt)
     end
 
     def check_gender

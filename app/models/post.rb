@@ -54,11 +54,11 @@ class Post < ActiveRecord::Base
     end
   }
 # TODO: make filter params more explicit
-
   scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*1609.34) }
   scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: filters[:age_pref].to_i) }
   scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace].to_i) }
   scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }
+  scope :filter_by_commitment, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("min_amt <= ?", filters[:min_amt]) }
 
   scope :get_runners, -> (id) { where( Commitment.where(post_id: id) )}
   def pace_title

@@ -10,22 +10,23 @@ $(document).ready(function(){
       console.log(user_lon);
     }
 
-  $('#pace_select, #age_select, #time_select').toggle();
+  $('#pace_select, #age_select, #time_select, #minimum_commitment_select').toggle();
 
   $('#radius_select, #gender_select').change(function(){
-    $('#pace_select, #age_select, #time_select').hide();
-    $('#filter_select, #age_select').val('0');
+    $('#pace_select, #age_select, #time_select, #minimum_commitment_select').hide();
+    $('#filter_select').val('0');
   });
 
   $('#filter_select').change(function() {
-    var filter = "#" + $("#filter_select option:selected").text() + "_select";
-    filter = filter.toLowerCase();
-    $('#pace_select, #age_select, #time_select').hide();
+    var filter = "#" + $("#filter_select option:selected").text().toLowerCase() + "_select";
+    filter = filter.replace(" ", "_");
+    console.log(filter);
+    $('#pace_select, #age_select, #time_select, #minimum_commitment_select').hide();
     $(filter).toggle();
   });
 
 // TODO: Nest geolocation or provide refresh button or loading bar
-  $('#radius_select, #gender_select, #pace_select, #age_select').change(submit_post_filters_form);
+  $('#radius_select, #gender_select, #pace_select, #age_select, #minimum_commitment_select').change(submit_post_filters_form);
   $('#post_filters_form').submit(submit_post_filters_form);
   $('#new_post').submit(submit_post_create_form);
 
