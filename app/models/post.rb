@@ -33,12 +33,16 @@ class Post < ActiveRecord::Base
   }
 
   has_many :commitments
-  has_many :users, :through => :commitments
+  has_many :runners, through: :commitments, source: :user
   has_one :challenge
-  belongs_to :organizer, class_name:"User", foreign_key:"organizer_id"
-  # has_many :post_users
-  # has_many :users, :through => :post_users
+  belongs_to :organizer, class_name: "User", foreign_key:"organizer_id"
   belongs_to :circle
+
+  # add_column :table, :column_name, :boolean, null: true, default: nil
+  validates_presence_of :organizer_id, :time, :pace, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address, :location
+  validates_inclusion_of :complete, :in => [true, false]
+
+
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
   scope :upcoming_user_runs, -> (user_id) { where(Commitment.where(user_id: user_id).pluck(:post_id)).where('time < ?', 1.hour.ago) }
@@ -55,13 +59,14 @@ class Post < ActiveRecord::Base
     end
   }
 # TODO: make filter params more explicit
-  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*1609.34) }
+
+  miles_to_meters = 1609.34
+  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*miles_to_meters) }
   scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: filters[:age_pref].to_i) }
   scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace].to_i) }
   scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }
   scope :filter_by_commitment, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("min_amt <= ?", filters[:min_amt]) }
 
-  scope :get_runners, -> (id) { where( Commitment.where(post_id: id) )}
   def pace_title
     PACE_LEVELS[pace]
   end
@@ -76,10 +81,6 @@ class Post < ActiveRecord::Base
 
   def time_in_tz
     Time.zone.parse(time.to_s).strftime("%a %B %e, %Y at %l:%M%P, %:z") + Time.zone.to_s
-  end
-
-  def runners
-    User.where(id: Commitment.where(post_id: id).pluck(:user_id))
   end
 end
 

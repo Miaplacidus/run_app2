@@ -5,7 +5,8 @@ RSpec.describe Post, :type => :model do
 
   let!(:post) { create(:post) }
 
-  describe "instantiation" do
+  it "has a valid factory" do
+    binding.pry
     expect(post.class.name).to eq("Post")
   end
 end
