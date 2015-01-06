@@ -32,7 +32,7 @@ group :development, :test do
   gem "capybara-screenshot"
   gem "database_cleaner"
   gem "dotenv-rails"
-  gem "factory_girl_rails", :require => false
+  gem "factory_girl_rails", "~> 4.0", :require => false
   gem "faker"
   # gem "guard-rspec"
   gem "letter_opener"

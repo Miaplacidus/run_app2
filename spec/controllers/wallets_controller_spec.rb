@@ -37,7 +37,7 @@ RSpec.describe WalletsController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all wallets as @wallets" do
+    xit "assigns all wallets as @wallets" do
       wallet = Wallet.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:wallets)).to eq([wallet])
@@ -45,7 +45,7 @@ RSpec.describe WalletsController, :type => :controller do
   end
 
   describe "GET show" do
-    it "assigns the requested wallet as @wallet" do
+    xit "assigns the requested wallet as @wallet" do
       wallet = Wallet.create! valid_attributes
       get :show, {:id => wallet.to_param}, valid_session
       expect(assigns(:wallet)).to eq(wallet)
@@ -53,14 +53,14 @@ RSpec.describe WalletsController, :type => :controller do
   end
 
   describe "GET new" do
-    it "assigns a new wallet as @wallet" do
+    xit "assigns a new wallet as @wallet" do
       get :new, {}, valid_session
       expect(assigns(:wallet)).to be_a_new(Wallet)
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested wallet as @wallet" do
+    xit "assigns the requested wallet as @wallet" do
       wallet = Wallet.create! valid_attributes
       get :edit, {:id => wallet.to_param}, valid_session
       expect(assigns(:wallet)).to eq(wallet)
@@ -69,31 +69,31 @@ RSpec.describe WalletsController, :type => :controller do
 
   describe "POST create" do
     describe "with valid params" do
-      it "creates a new Wallet" do
+      xit "creates a new Wallet" do
         expect {
           post :create, {:wallet => valid_attributes}, valid_session
         }.to change(Wallet, :count).by(1)
       end
 
-      it "assigns a newly created wallet as @wallet" do
+      xit "assigns a newly created wallet as @wallet" do
         post :create, {:wallet => valid_attributes}, valid_session
         expect(assigns(:wallet)).to be_a(Wallet)
         expect(assigns(:wallet)).to be_persisted
       end
 
-      it "redirects to the created wallet" do
+      xit "redirects to the created wallet" do
         post :create, {:wallet => valid_attributes}, valid_session
         expect(response).to redirect_to(Wallet.last)
       end
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved wallet as @wallet" do
+      xit "assigns a newly created but unsaved wallet as @wallet" do
         post :create, {:wallet => invalid_attributes}, valid_session
         expect(assigns(:wallet)).to be_a_new(Wallet)
       end
 
-      it "re-renders the 'new' template" do
+      xit "re-renders the 'new' template" do
         post :create, {:wallet => invalid_attributes}, valid_session
         expect(response).to render_template("new")
       end
@@ -106,20 +106,20 @@ RSpec.describe WalletsController, :type => :controller do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested wallet" do
+      xit "updates the requested wallet" do
         wallet = Wallet.create! valid_attributes
         put :update, {:id => wallet.to_param, :wallet => new_attributes}, valid_session
         wallet.reload
         skip("Add assertions for updated state")
       end
 
-      it "assigns the requested wallet as @wallet" do
+      xit "assigns the requested wallet as @wallet" do
         wallet = Wallet.create! valid_attributes
         put :update, {:id => wallet.to_param, :wallet => valid_attributes}, valid_session
         expect(assigns(:wallet)).to eq(wallet)
       end
 
-      it "redirects to the wallet" do
+      xit "redirects to the wallet" do
         wallet = Wallet.create! valid_attributes
         put :update, {:id => wallet.to_param, :wallet => valid_attributes}, valid_session
         expect(response).to redirect_to(wallet)
@@ -127,13 +127,13 @@ RSpec.describe WalletsController, :type => :controller do
     end
 
     describe "with invalid params" do
-      it "assigns the wallet as @wallet" do
+      xit "assigns the wallet as @wallet" do
         wallet = Wallet.create! valid_attributes
         put :update, {:id => wallet.to_param, :wallet => invalid_attributes}, valid_session
         expect(assigns(:wallet)).to eq(wallet)
       end
 
-      it "re-renders the 'edit' template" do
+      xit "re-renders the 'edit' template" do
         wallet = Wallet.create! valid_attributes
         put :update, {:id => wallet.to_param, :wallet => invalid_attributes}, valid_session
         expect(response).to render_template("edit")
@@ -142,14 +142,14 @@ RSpec.describe WalletsController, :type => :controller do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested wallet" do
+    xit "destroys the requested wallet" do
       wallet = Wallet.create! valid_attributes
       expect {
         delete :destroy, {:id => wallet.to_param}, valid_session
       }.to change(Wallet, :count).by(-1)
     end
 
-    it "redirects to the wallets list" do
+    xit "redirects to the wallets list" do
       wallet = Wallet.create! valid_attributes
       delete :destroy, {:id => wallet.to_param}, valid_session
       expect(response).to redirect_to(wallets_url)

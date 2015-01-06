@@ -26,7 +26,7 @@ RSpec.describe "users/index", :type => :view do
     ])
   end
 
-  it "renders a list of users" do
+  xit "renders a list of users" do
     render
     assert_select "tr>td", :text => "First Name".to_s, :count => 2
     assert_select "tr>td", :text => 1.to_s, :count => 2

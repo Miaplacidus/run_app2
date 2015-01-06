@@ -37,7 +37,7 @@ RSpec.describe CommitmentsController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all commitments as @commitments" do
+    xit "assigns all commitments as @commitments" do
       commitment = Commitment.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:commitments)).to eq([commitment])
@@ -45,7 +45,7 @@ RSpec.describe CommitmentsController, :type => :controller do
   end
 
   describe "GET show" do
-    it "assigns the requested commitment as @commitment" do
+    xit "assigns the requested commitment as @commitment" do
       commitment = Commitment.create! valid_attributes
       get :show, {:id => commitment.to_param}, valid_session
       expect(assigns(:commitment)).to eq(commitment)
@@ -53,14 +53,14 @@ RSpec.describe CommitmentsController, :type => :controller do
   end
 
   describe "GET new" do
-    it "assigns a new commitment as @commitment" do
+    xit "assigns a new commitment as @commitment" do
       get :new, {}, valid_session
       expect(assigns(:commitment)).to be_a_new(Commitment)
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested commitment as @commitment" do
+    xit "assigns the requested commitment as @commitment" do
       commitment = Commitment.create! valid_attributes
       get :edit, {:id => commitment.to_param}, valid_session
       expect(assigns(:commitment)).to eq(commitment)
@@ -69,31 +69,31 @@ RSpec.describe CommitmentsController, :type => :controller do
 
   describe "POST create" do
     describe "with valid params" do
-      it "creates a new Commitment" do
+      xit "creates a new Commitment" do
         expect {
           post :create, {:commitment => valid_attributes}, valid_session
         }.to change(Commitment, :count).by(1)
       end
 
-      it "assigns a newly created commitment as @commitment" do
+      xit "assigns a newly created commitment as @commitment" do
         post :create, {:commitment => valid_attributes}, valid_session
         expect(assigns(:commitment)).to be_a(Commitment)
         expect(assigns(:commitment)).to be_persisted
       end
 
-      it "redirects to the created commitment" do
+      xit "redirects to the created commitment" do
         post :create, {:commitment => valid_attributes}, valid_session
         expect(response).to redirect_to(Commitment.last)
       end
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved commitment as @commitment" do
+      xit "assigns a newly created but unsaved commitment as @commitment" do
         post :create, {:commitment => invalid_attributes}, valid_session
         expect(assigns(:commitment)).to be_a_new(Commitment)
       end
 
-      it "re-renders the 'new' template" do
+      xit "re-renders the 'new' template" do
         post :create, {:commitment => invalid_attributes}, valid_session
         expect(response).to render_template("new")
       end
@@ -106,20 +106,20 @@ RSpec.describe CommitmentsController, :type => :controller do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested commitment" do
+      xit "updates the requested commitment" do
         commitment = Commitment.create! valid_attributes
         put :update, {:id => commitment.to_param, :commitment => new_attributes}, valid_session
         commitment.reload
         skip("Add assertions for updated state")
       end
 
-      it "assigns the requested commitment as @commitment" do
+      xit "assigns the requested commitment as @commitment" do
         commitment = Commitment.create! valid_attributes
         put :update, {:id => commitment.to_param, :commitment => valid_attributes}, valid_session
         expect(assigns(:commitment)).to eq(commitment)
       end
 
-      it "redirects to the commitment" do
+      xit "redirects to the commitment" do
         commitment = Commitment.create! valid_attributes
         put :update, {:id => commitment.to_param, :commitment => valid_attributes}, valid_session
         expect(response).to redirect_to(commitment)
@@ -127,13 +127,13 @@ RSpec.describe CommitmentsController, :type => :controller do
     end
 
     describe "with invalid params" do
-      it "assigns the commitment as @commitment" do
+      xit "assigns the commitment as @commitment" do
         commitment = Commitment.create! valid_attributes
         put :update, {:id => commitment.to_param, :commitment => invalid_attributes}, valid_session
         expect(assigns(:commitment)).to eq(commitment)
       end
 
-      it "re-renders the 'edit' template" do
+      xit "re-renders the 'edit' template" do
         commitment = Commitment.create! valid_attributes
         put :update, {:id => commitment.to_param, :commitment => invalid_attributes}, valid_session
         expect(response).to render_template("edit")
@@ -142,14 +142,14 @@ RSpec.describe CommitmentsController, :type => :controller do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested commitment" do
+    xit "destroys the requested commitment" do
       commitment = Commitment.create! valid_attributes
       expect {
         delete :destroy, {:id => commitment.to_param}, valid_session
       }.to change(Commitment, :count).by(-1)
     end
 
-    it "redirects to the commitments list" do
+    xit "redirects to the commitments list" do
       commitment = Commitment.create! valid_attributes
       delete :destroy, {:id => commitment.to_param}, valid_session
       expect(response).to redirect_to(commitments_url)

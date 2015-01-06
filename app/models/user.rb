@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
   has_many :commitments
   has_many :created_posts, class_name:"Posts", foreign_key:"organizer_id"
   has_many :join_requests
-  has_many :post_users
-  has_many :posts, :through => :post_users
+  has_many :commitments
+  has_many :posts, through: :commitments
   has_one :wallet
 
   enum gender: [:unspecified, :female, :male]

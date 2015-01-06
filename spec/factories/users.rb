@@ -2,13 +2,13 @@
 
 FactoryGirl.define do
   factory :user do
-    first_name "MyString"
+    first_name "Sophie"
     gender 1
-    email "MyString"
-    bday "MyString"
+    email "sophie@wisdom.com"
+    bday "03/14/1987"
     rating 1.5
-    fbid "MyString"
-    image "MyString"
+    fbid "3737g7d88js"
+    image "some_img.jpg"
     level 1
   end
 end

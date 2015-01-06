@@ -276,7 +276,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   database_cleaner
   dotenv-rails
-  factory_girl_rails
+  factory_girl_rails (~> 4.0)
   faker
   font-awesome-rails (~> 4.2.0)
   geocoder

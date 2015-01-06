@@ -9,7 +9,7 @@ RSpec.describe "join_requests/show", :type => :view do
     ))
   end
 
-  it "renders attributes in <p>" do
+  xit "renders attributes in <p>" do
     render
     expect(rendered).to match(/1/)
     expect(rendered).to match(/2/)

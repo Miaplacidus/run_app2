@@ -37,7 +37,7 @@ RSpec.describe ChallengesController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all challenges as @challenges" do
+    xit "assigns all challenges as @challenges" do
       challenge = Challenge.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:challenges)).to eq([challenge])
@@ -45,7 +45,7 @@ RSpec.describe ChallengesController, :type => :controller do
   end
 
   describe "GET show" do
-    it "assigns the requested challenge as @challenge" do
+    xit "assigns the requested challenge as @challenge" do
       challenge = Challenge.create! valid_attributes
       get :show, {:id => challenge.to_param}, valid_session
       expect(assigns(:challenge)).to eq(challenge)
@@ -53,14 +53,14 @@ RSpec.describe ChallengesController, :type => :controller do
   end
 
   describe "GET new" do
-    it "assigns a new challenge as @challenge" do
+    xit "assigns a new challenge as @challenge" do
       get :new, {}, valid_session
       expect(assigns(:challenge)).to be_a_new(Challenge)
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested challenge as @challenge" do
+    xit "assigns the requested challenge as @challenge" do
       challenge = Challenge.create! valid_attributes
       get :edit, {:id => challenge.to_param}, valid_session
       expect(assigns(:challenge)).to eq(challenge)
@@ -69,31 +69,31 @@ RSpec.describe ChallengesController, :type => :controller do
 
   describe "POST create" do
     describe "with valid params" do
-      it "creates a new Challenge" do
+      xit "creates a new Challenge" do
         expect {
           post :create, {:challenge => valid_attributes}, valid_session
         }.to change(Challenge, :count).by(1)
       end
 
-      it "assigns a newly created challenge as @challenge" do
+      xit "assigns a newly created challenge as @challenge" do
         post :create, {:challenge => valid_attributes}, valid_session
         expect(assigns(:challenge)).to be_a(Challenge)
         expect(assigns(:challenge)).to be_persisted
       end
 
-      it "redirects to the created challenge" do
+      xit "redirects to the created challenge" do
         post :create, {:challenge => valid_attributes}, valid_session
         expect(response).to redirect_to(Challenge.last)
       end
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved challenge as @challenge" do
+      xit "assigns a newly created but unsaved challenge as @challenge" do
         post :create, {:challenge => invalid_attributes}, valid_session
         expect(assigns(:challenge)).to be_a_new(Challenge)
       end
 
-      it "re-renders the 'new' template" do
+      xit "re-renders the 'new' template" do
         post :create, {:challenge => invalid_attributes}, valid_session
         expect(response).to render_template("new")
       end
@@ -106,20 +106,20 @@ RSpec.describe ChallengesController, :type => :controller do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested challenge" do
+      xit "updates the requested challenge" do
         challenge = Challenge.create! valid_attributes
         put :update, {:id => challenge.to_param, :challenge => new_attributes}, valid_session
         challenge.reload
         skip("Add assertions for updated state")
       end
 
-      it "assigns the requested challenge as @challenge" do
+      xit "assigns the requested challenge as @challenge" do
         challenge = Challenge.create! valid_attributes
         put :update, {:id => challenge.to_param, :challenge => valid_attributes}, valid_session
         expect(assigns(:challenge)).to eq(challenge)
       end
 
-      it "redirects to the challenge" do
+      xit "redirects to the challenge" do
         challenge = Challenge.create! valid_attributes
         put :update, {:id => challenge.to_param, :challenge => valid_attributes}, valid_session
         expect(response).to redirect_to(challenge)
@@ -127,13 +127,13 @@ RSpec.describe ChallengesController, :type => :controller do
     end
 
     describe "with invalid params" do
-      it "assigns the challenge as @challenge" do
+      xit "assigns the challenge as @challenge" do
         challenge = Challenge.create! valid_attributes
         put :update, {:id => challenge.to_param, :challenge => invalid_attributes}, valid_session
         expect(assigns(:challenge)).to eq(challenge)
       end
 
-      it "re-renders the 'edit' template" do
+      xit "re-renders the 'edit' template" do
         challenge = Challenge.create! valid_attributes
         put :update, {:id => challenge.to_param, :challenge => invalid_attributes}, valid_session
         expect(response).to render_template("edit")
@@ -142,14 +142,14 @@ RSpec.describe ChallengesController, :type => :controller do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested challenge" do
+    xit "destroys the requested challenge" do
       challenge = Challenge.create! valid_attributes
       expect {
         delete :destroy, {:id => challenge.to_param}, valid_session
       }.to change(Challenge, :count).by(-1)
     end
 
-    it "redirects to the challenges list" do
+    xit "redirects to the challenges list" do
       challenge = Challenge.create! valid_attributes
       delete :destroy, {:id => challenge.to_param}, valid_session
       expect(response).to redirect_to(challenges_url)

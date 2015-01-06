@@ -2,13 +2,13 @@
 
 FactoryGirl.define do
   factory :circle do
-    name "MyString"
+    name "DevMynd"
     max_members 1
     latitude 1.5
     longitude 1.5
-    description "MyText"
+    description "We code. We run. We WIN."
     level 1
-    city "MyString"
+    city "Chi-Town"
     admin_id 1
   end
 end

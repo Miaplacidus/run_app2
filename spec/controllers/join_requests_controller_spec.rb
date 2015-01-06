@@ -37,7 +37,7 @@ RSpec.describe JoinRequestsController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all join_requests as @join_requests" do
+    xit "assigns all join_requests as @join_requests" do
       join_request = JoinRequest.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:join_requests)).to eq([join_request])
@@ -45,7 +45,7 @@ RSpec.describe JoinRequestsController, :type => :controller do
   end
 
   describe "GET show" do
-    it "assigns the requested join_request as @join_request" do
+    xit "assigns the requested join_request as @join_request" do
       join_request = JoinRequest.create! valid_attributes
       get :show, {:id => join_request.to_param}, valid_session
       expect(assigns(:join_request)).to eq(join_request)
@@ -53,14 +53,14 @@ RSpec.describe JoinRequestsController, :type => :controller do
   end
 
   describe "GET new" do
-    it "assigns a new join_request as @join_request" do
+    xit "assigns a new join_request as @join_request" do
       get :new, {}, valid_session
       expect(assigns(:join_request)).to be_a_new(JoinRequest)
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested join_request as @join_request" do
+    xit "assigns the requested join_request as @join_request" do
       join_request = JoinRequest.create! valid_attributes
       get :edit, {:id => join_request.to_param}, valid_session
       expect(assigns(:join_request)).to eq(join_request)
@@ -69,31 +69,31 @@ RSpec.describe JoinRequestsController, :type => :controller do
 
   describe "POST create" do
     describe "with valid params" do
-      it "creates a new JoinRequest" do
+      xit "creates a new JoinRequest" do
         expect {
           post :create, {:join_request => valid_attributes}, valid_session
         }.to change(JoinRequest, :count).by(1)
       end
 
-      it "assigns a newly created join_request as @join_request" do
+      xit "assigns a newly created join_request as @join_request" do
         post :create, {:join_request => valid_attributes}, valid_session
         expect(assigns(:join_request)).to be_a(JoinRequest)
         expect(assigns(:join_request)).to be_persisted
       end
 
-      it "redirects to the created join_request" do
+      xit "redirects to the created join_request" do
         post :create, {:join_request => valid_attributes}, valid_session
         expect(response).to redirect_to(JoinRequest.last)
       end
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved join_request as @join_request" do
+      xit "assigns a newly created but unsaved join_request as @join_request" do
         post :create, {:join_request => invalid_attributes}, valid_session
         expect(assigns(:join_request)).to be_a_new(JoinRequest)
       end
 
-      it "re-renders the 'new' template" do
+      xit "re-renders the 'new' template" do
         post :create, {:join_request => invalid_attributes}, valid_session
         expect(response).to render_template("new")
       end
@@ -106,20 +106,20 @@ RSpec.describe JoinRequestsController, :type => :controller do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested join_request" do
+      xit "updates the requested join_request" do
         join_request = JoinRequest.create! valid_attributes
         put :update, {:id => join_request.to_param, :join_request => new_attributes}, valid_session
         join_request.reload
         skip("Add assertions for updated state")
       end
 
-      it "assigns the requested join_request as @join_request" do
+      xit "assigns the requested join_request as @join_request" do
         join_request = JoinRequest.create! valid_attributes
         put :update, {:id => join_request.to_param, :join_request => valid_attributes}, valid_session
         expect(assigns(:join_request)).to eq(join_request)
       end
 
-      it "redirects to the join_request" do
+      xit "redirects to the join_request" do
         join_request = JoinRequest.create! valid_attributes
         put :update, {:id => join_request.to_param, :join_request => valid_attributes}, valid_session
         expect(response).to redirect_to(join_request)
@@ -127,13 +127,13 @@ RSpec.describe JoinRequestsController, :type => :controller do
     end
 
     describe "with invalid params" do
-      it "assigns the join_request as @join_request" do
+      xit "assigns the join_request as @join_request" do
         join_request = JoinRequest.create! valid_attributes
         put :update, {:id => join_request.to_param, :join_request => invalid_attributes}, valid_session
         expect(assigns(:join_request)).to eq(join_request)
       end
 
-      it "re-renders the 'edit' template" do
+      xit "re-renders the 'edit' template" do
         join_request = JoinRequest.create! valid_attributes
         put :update, {:id => join_request.to_param, :join_request => invalid_attributes}, valid_session
         expect(response).to render_template("edit")
@@ -142,14 +142,14 @@ RSpec.describe JoinRequestsController, :type => :controller do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested join_request" do
+    xit "destroys the requested join_request" do
       join_request = JoinRequest.create! valid_attributes
       expect {
         delete :destroy, {:id => join_request.to_param}, valid_session
       }.to change(JoinRequest, :count).by(-1)
     end
 
-    it "redirects to the join_requests list" do
+    xit "redirects to the join_requests list" do
       join_request = JoinRequest.create! valid_attributes
       delete :destroy, {:id => join_request.to_param}, valid_session
       expect(response).to redirect_to(join_requests_url)

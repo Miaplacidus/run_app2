@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212174157) do
+ActiveRecord::Schema.define(version: 20150106174019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,16 +78,6 @@ ActiveRecord::Schema.define(version: 20141212174157) do
 
   add_index "join_requests", ["circle_id"], :name => "index_join_requests_on_circle_id"
   add_index "join_requests", ["user_id"], :name => "index_join_requests_on_user_id"
-
-  create_table "post_users", force: true do |t|
-    t.integer  "post_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "post_users", ["post_id"], :name => "index_post_users_on_post_id"
-  add_index "post_users", ["user_id"], :name => "index_post_users_on_user_id"
 
   create_table "posts", force: true do |t|
     t.integer  "circle_id"

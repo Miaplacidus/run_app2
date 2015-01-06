@@ -16,7 +16,7 @@ RSpec.describe "join_requests/index", :type => :view do
     ])
   end
 
-  it "renders a list of join_requests" do
+  xit "renders a list of join_requests" do
     render
     assert_select "tr>td", :text => 1.to_s, :count => 2
     assert_select "tr>td", :text => 2.to_s, :count => 2

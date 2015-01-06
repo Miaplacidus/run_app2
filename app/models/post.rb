@@ -33,6 +33,7 @@ class Post < ActiveRecord::Base
   }
 
   has_many :commitments
+  has_many :users, :through => :commitments
   has_one :challenge
   belongs_to :organizer, class_name:"User", foreign_key:"organizer_id"
   # has_many :post_users

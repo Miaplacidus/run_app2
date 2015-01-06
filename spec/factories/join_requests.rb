@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :join_request do
-    cicle_id 1
+    circle_id 1
     user_id 1
     accepted false
   end

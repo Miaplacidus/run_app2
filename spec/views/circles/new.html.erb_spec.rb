@@ -14,7 +14,7 @@ RSpec.describe "circles/new", :type => :view do
     ))
   end
 
-  it "renders new circle form" do
+  xit "renders new circle form" do
     render
 
     assert_select "form[action=?][method=?]", circles_path, "post" do

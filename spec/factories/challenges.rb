@@ -2,11 +2,11 @@
 
 FactoryGirl.define do
   factory :challenge do
-    name "MyString"
+    name "Kick ass"
     sender_id 1
     recipient_id 1
     post_id 1
-    state "MyString"
-    notes "MyText"
+    state "pending"
+    notes "Meet up at the park and run like mad."
   end
 end

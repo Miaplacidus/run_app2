@@ -9,7 +9,7 @@ RSpec.describe "join_requests/edit", :type => :view do
     ))
   end
 
-  it "renders the edit join_request form" do
+  xit "renders the edit join_request form" do
     render
 
     assert_select "form[action=?][method=?]", join_request_path(@join_request), "post" do
