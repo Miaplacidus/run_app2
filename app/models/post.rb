@@ -1,36 +1,9 @@
 class Post < ActiveRecord::Base
-  # consider using arrays/ enums with "" in internationalization file
   # Change class name to scheduled_runs or event
   # TODO: create after save hook to generate address from location after saving
-  PACE_LEVELS = {
-    0 => "All/Any levels",
-    1 => "Military: 6 min and under/mile",
-    2 => "Advanced: 6-7 min/mi",
-    3 => "High Intermediate: 7-8 min/mi",
-    4 => "Intermediate: 8-9 min/mi",
-    5 => "Beginner: 9-10 min/mi",
-    6 => "Jogger: 10-11 min/mi",
-    7 => "Speedwalker: 11-12 min/mi",
-    8 => "Sprints: 12+ min/mi"
-  }
-
-  AGE_PREFERENCES = {
-    0 => "No preference",
-    1 => "18-22",
-    2 => "23-29",
-    3 => "30-39",
-    4 => "40-49",
-    5 => "50-59",
-    6 => "60-69",
-    7 => "70-79",
-    8 => "80+"
-  }
-
-  GENDER_PREFERENCES = {
-    0 => "Both Women and Men",
-    1 => "Women Only",
-    2 => "Men Only"
-  }
+  enum pace: ['All/Any Levels', 'Military: 6 min and under/mile', 'Advanced: 6-7 min/mi', 'High Intermediate: 7-8 min/mi', 'Intermediate: 8-9 min/mi', 'Beginner: 9-10 min/mi', 'Jogger: 10-11 min/mi', 'Speedwalker: 11-12 min/mi', 'Sprints: 12+ min/mi']
+  enum age_pref: ['No preference', '18-22', '23-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+']
+  enum gender_pref: ['Both Women and Men', 'Women Only', 'Men Only']
 
   has_many :commitments
   has_many :runners, through: :commitments, source: :user
@@ -42,7 +15,13 @@ class Post < ActiveRecord::Base
   validates_presence_of :organizer_id, :time, :pace, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address, :location
   validates_inclusion_of :complete, :in => [true, false]
 
-
+=begin
+  # validations:
+  1. post should always be created with at least one commitment, which should belong to the organizer, unless
+  the post has an associated circle and the organizer will not be attending.
+  2. should always have all data with the exception of circle_id (check what happens when empty notes are given)
+  3. should never allow commitments to be created when the maximum number of runners has been reached.
+=end
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
   scope :upcoming_user_runs, -> (user_id) { where(Commitment.where(user_id: user_id).pluck(:post_id)).where('time < ?', 1.hour.ago) }
@@ -66,18 +45,6 @@ class Post < ActiveRecord::Base
   scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace].to_i) }
   scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }
   scope :filter_by_commitment, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("min_amt <= ?", filters[:min_amt]) }
-
-  def pace_title
-    PACE_LEVELS[pace]
-  end
-
-  def age_preference_range
-    AGE_PREFERENCES[age_pref]
-  end
-
-  def gender_preference
-    GENDER_PREFERENCES[gender_pref]
-  end
 
   def time_in_tz
     Time.zone.parse(time.to_s).strftime("%a %B %e, %Y at %l:%M%P, %:z") + Time.zone.to_s

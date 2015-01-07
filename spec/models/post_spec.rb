@@ -6,7 +6,24 @@ RSpec.describe Post, :type => :model do
   let!(:post) { create(:post) }
 
   it "has a valid factory" do
-    binding.pry
     expect(post.class.name).to eq("Post")
+  end
+
+  it "is invalid without required attributes" do
+
+  end
+
+  it "returns the correct pace"
+
+  context "when post is public" do
+    it "creates associated commitment for organizer" do
+
+    end
+  end
+
+  context "when post is associated with a circle" do
+    it "" do
+
+    end
   end
 end
