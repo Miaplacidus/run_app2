@@ -9,10 +9,10 @@ FactoryGirl.define do
     pace 1
     notes "No crying."
     complete false
-    min_amt 1.5
+    min_amt 0
     age_pref 1
     gender_pref 1
-    max_runners 1
+    max_runners 2
     min_distance 1
     address "123 Marathon Blvd, Chicago, IL 60647"
   end
