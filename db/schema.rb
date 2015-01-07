@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106174019) do
+ActiveRecord::Schema.define(version: 20150107223316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20150106174019) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.spatial  "location",     limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.boolean  "public",                                                                default: true
   end
 
   add_index "posts", ["circle_id"], :name => "index_posts_on_circle_id"
