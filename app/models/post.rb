@@ -11,17 +11,11 @@ class Post < ActiveRecord::Base
   belongs_to :organizer, class_name: "User", foreign_key:"organizer_id"
   belongs_to :circle
 
-  # add_column :table, :column_name, :boolean, null: true, default: nil
-  validates_presence_of :organizer_id, :time, :pace, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address, :location
+  validates_presence_of :organizer_id, :time, :pace, :age_pref, :gender_pref, :min_distance, :address, :location
   validates_inclusion_of :complete, :in => [true, false]
-
-=begin
-  # validations:
-  1. post should always be created with at least one commitment, which should belong to the organizer, unless
-  the post has an associated circle and the organizer will not be attending.
-  2. should always have all data with the exception of circle_id (check what happens when empty notes are given)
-  3. should never allow commitments to be created when the maximum number of runners has been reached.
-=end
+  validates_inclusion_of :max_runners, :in => [2, 5, 8, 11, 14]
+  validates_inclusion_of :min_amt, :in => [0, 5, 10, 15, 20]
+  validates_inclusion_of :min_distance, :in => [1, 5, 9, 13, 17, 22, 26]
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
   scope :upcoming_user_runs, -> (user_id) { where(Commitment.where(user_id: user_id).pluck(:post_id)).where('time < ?', 1.hour.ago) }
@@ -37,8 +31,8 @@ class Post < ActiveRecord::Base
       where("gender_pref = ?", User.genders[ User.find(filters[:user_id]).gender.to_sym ])
     end
   }
-# TODO: make filter params more explicit
 
+# TODO: make filter params more explicit
   miles_to_meters = 1609.34
   scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*miles_to_meters) }
   scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: filters[:age_pref].to_i) }
