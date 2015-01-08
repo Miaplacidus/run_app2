@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :wallet do
-    user_id 1
+    user
     balance 1.5
   end
 end

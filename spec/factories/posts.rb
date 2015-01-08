@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :post do
-    circle_id 1
-    organizer_id 1
+    circle
+    organizer
     time "2014-09-29 20:32:51"
     location "POINT(#{-87.6789658} #{41.9120736})"
     pace 1
@@ -15,5 +15,6 @@ FactoryGirl.define do
     max_runners 2
     min_distance 1
     address "123 Marathon Blvd, Chicago, IL 60647"
+    is_public true
   end
 end

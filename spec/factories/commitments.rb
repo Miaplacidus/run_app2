@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :commitment do
     amount 1.5
     fulfilled false
-    post_id 1
-    user_id 1
+    post
+    user
   end
 end
