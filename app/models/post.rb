@@ -1,6 +1,13 @@
 class Post < ActiveRecord::Base
   # Change class name to scheduled_runs or event
   # TODO: create after save hook to generate address from location after saving
+  after_save do |record|
+    if !record.circle_id || ( record.organizer_id != Circle.find(record.circle_id).admin_id )
+      Commitment.create(post_id: record.id, user_id: record.organizer_id, amount: record.min_amt)
+    end
+  end
+  # after_save {}
+
   enum pace: ['All/Any Levels', 'Military: 6 min and under/mile', 'Advanced: 6-7 min/mi', 'High Intermediate: 7-8 min/mi', 'Intermediate: 8-9 min/mi', 'Beginner: 9-10 min/mi', 'Jogger: 10-11 min/mi', 'Speedwalker: 11-12 min/mi', 'Sprints: 12+ min/mi']
   enum age_pref: ['No preference', '18-22', '23-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+']
   enum gender_pref: ['Both Women and Men', 'Women Only', 'Men Only']
@@ -18,9 +25,9 @@ class Post < ActiveRecord::Base
   validates_inclusion_of :min_distance, :in => [1, 5, 9, 13, 17, 22, 26]
 
   set_rgeo_factory_for_column(:location, RGeo::Geographic.spherical_factory(:srid => 4326))
+
   scope :upcoming_user_runs, -> (user_id) { where(Commitment.where(user_id: user_id).pluck(:post_id)).where('time < ?', 1.hour.ago) }
   scope :upcoming_admin_runs, -> (user_id) { where(organizer_id: user_id).where('time < ?', 1.hour.ago) }
-
 # filters = {user_lat, user_lon, radius, gender_pref, user_id}
   scope :filter_by_gender, -> (filters) {
     if filters[:gender_pref].to_i == 3
@@ -31,7 +38,6 @@ class Post < ActiveRecord::Base
       where("gender_pref = ?", User.genders[ User.find(filters[:user_id]).gender.to_sym ])
     end
   }
-
 # TODO: make filter params more explicit
   miles_to_meters = 1609.34
   scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*miles_to_meters) }

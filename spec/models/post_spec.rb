@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Post, :type => :model do
-  let!(:post) { create(:post) }
 
   it "has a valid factory" do
-    expect(post.class.name).to eq("Post")
+    expect(create(:post)).to be_valid
   end
 
   it "is invalid without an organizer" do
@@ -55,15 +54,27 @@ RSpec.describe Post, :type => :model do
     expect(build(:post, min_distance: nil)).to_not be_valid
   end
 
-  context "when post is public" do
-    it "creates associated commitment for organizer" do
+  xit "returns the time in the correct time zone" do
+  end
 
+  context "when post is public" do
+    # let!(:post) { create(:post) }
+    it "creates associated commitment for organizer" do
+      post = create(:post, circle_id: nil)
+      expect(Commitment.exists?(post_id: post.id)).to be true
     end
   end
 
   context "when post is associated with a circle" do
-    it "" do
+    it "does create associated commitment for circle members" do
 
+    end
+
+    it "does not create associated commitment for circle admin" do
+      post = build(:post)
+      post.organizer_id = Circle.find(post.circle_id).admin_id
+      post.save
+      expect(Commitment.exists?(post_id: post.id)).to be false
     end
   end
 end

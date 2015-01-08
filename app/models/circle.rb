@@ -1,5 +1,7 @@
 class Circle < ActiveRecord::Base
-  # Differentiate between reg users and administrator
+  # Administrator has the ability to delete the circle and to delete a post. Administrator can also create posts
+  # without being committed to them. Other members of the circle can schedule runs for the group, but they must commit
+  # to those runs.
   belongs_to :admin, class_name:"User"
   has_many :circle_users
   has_many :users, :through => :circle_users
