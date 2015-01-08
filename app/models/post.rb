@@ -6,7 +6,10 @@ class Post < ActiveRecord::Base
       Commitment.create(post_id: record.id, user_id: record.organizer_id, amount: record.min_amt)
     end
   end
-  # after_save {}
+
+  after_save do |record|
+    post.update( address: Geocoder.address( [record.location.latitude, record.location.longitude]) )
+  end
 
   enum pace: ['All/Any Levels', 'Military: 6 min and under/mile', 'Advanced: 6-7 min/mi', 'High Intermediate: 7-8 min/mi', 'Intermediate: 8-9 min/mi', 'Beginner: 9-10 min/mi', 'Jogger: 10-11 min/mi', 'Speedwalker: 11-12 min/mi', 'Sprints: 12+ min/mi']
   enum age_pref: ['No preference', '18-22', '23-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+']
@@ -40,12 +43,12 @@ class Post < ActiveRecord::Base
   }
 # TODO: make filter params more explicit
   miles_to_meters = 1609.34
-  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*miles_to_meters) }
-  scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: filters[:age_pref].to_i) }
-  scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace].to_i) }
-  scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }
-  scope :filter_by_commitment, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("min_amt <= ?", filters[:min_amt]) }
-
+  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*miles_to_meters).order_by_nearest(filters) }
+  scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: filters[:age_pref].to_i).order_by_nearest(filters) }
+  scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace].to_i).order_by_nearest(filters) }
+  scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]).order_by_nearest(filters) }
+  scope :filter_by_commitment, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("min_amt <= ?", filters[:min_amt]).order_by_nearest(filters) }
+  scope :order_by_nearest, -> (filters) { order("ST_Distance(location, ST_GeomFromText('? ?', 4326))", filters[:user_lon].to_f, filters[:user_lat].to_f) }
   def time_in_tz
     Time.zone.parse(time.to_s).strftime("%a %B %e, %Y at %l:%M%P, %:z") + Time.zone.to_s
   end

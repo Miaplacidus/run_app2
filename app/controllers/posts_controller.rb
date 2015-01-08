@@ -52,7 +52,6 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     geo_loc = Geocoder.coordinates(params[:post][:address])
-    params[:post][:address] = Geocoder.address(geo_loc)
     params[:post][:location] = "POINT(#{geo_loc[1]} #{geo_loc[0]})"
 
     date = params[:day][:day] + '/' + params[:month_select] + '/' + params[:year][:year]

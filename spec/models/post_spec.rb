@@ -67,7 +67,8 @@ RSpec.describe Post, :type => :model do
 
   context "when post is associated with a circle" do
     it "does create associated commitment for circle members" do
-
+      post = create(:post)
+      expect(Commitment.exists?(post_id: post.id)).to be true
     end
 
     it "does not create associated commitment for circle admin" do
@@ -76,5 +77,9 @@ RSpec.describe Post, :type => :model do
       post.save
       expect(Commitment.exists?(post_id: post.id)).to be false
     end
+  end
+
+  xit "returns an array of locations sorted by distance from a point" do
+
   end
 end
