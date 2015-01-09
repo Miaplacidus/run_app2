@@ -1,14 +1,11 @@
 class Post < ActiveRecord::Base
   # Change class name to scheduled_runs or event
-  # TODO: create after save hook to generate address from location after saving
   after_save do |record|
     if !record.circle_id || ( record.organizer_id != Circle.find(record.circle_id).admin_id )
       Commitment.create(post_id: record.id, user_id: record.organizer_id, amount: record.min_amt)
     end
-  end
 
-  after_save do |record|
-    post.update( address: Geocoder.address( [record.location.latitude, record.location.longitude]) )
+    # record.update( address: Geocoder.address( [record.location.latitude, record.location.longitude]) )
   end
 
   enum pace: ['All/Any Levels', 'Military: 6 min and under/mile', 'Advanced: 6-7 min/mi', 'High Intermediate: 7-8 min/mi', 'Intermediate: 8-9 min/mi', 'Beginner: 9-10 min/mi', 'Jogger: 10-11 min/mi', 'Speedwalker: 11-12 min/mi', 'Sprints: 12+ min/mi']

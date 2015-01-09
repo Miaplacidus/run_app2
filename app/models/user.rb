@@ -10,27 +10,28 @@ class User < ActiveRecord::Base
   has_one :wallet
 
   enum gender: [:unspecified, :female, :male]
+  validates_presence_of :email, :first_name
   validates_uniqueness_of :email
 
   scope :committed_to_run, -> (post_id) { where(Post.where(id: post_id).first.commitments.pluck(:user_id)) }
   scope :run_attendees, -> (post_id) { where(Post.where(id: post_id).first.commitments.where(fulfilled: true).pluck(:user_id) )}
   scope :requested_to_join_circle, -> (circle_id) { where(JoinRequest.where(circle_id: circle_id).pluck(:user_id)) }
-  scope :nearby, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon], filters[:user_lat], 2) }
+  scope :nearby, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon], filters[:user_lat], 12) }
 
   scope :from_omniauth, -> (auth) {
     where(fbid: auth.uid).first_or_initialize.tap do |user|
       user.fbid = auth.uid
       user.first_name = auth.info.first_name
       user.img_url = auth.info.image
-      user.email = auth.info.email
+      user.email = auth.extra.raw_info.email
       user.bday = auth.extra.raw_info.birthday
-      user.gender_id(user, auth.extra.raw_info.gender)
+      user.gender_id(auth.extra.raw_info.gender)
 
       user.save!
     end
   }
 
-  def gender_id(user, gender)
+  def gender_id(gender)
     if gender == 'female'
       female!
     elsif gender == 'male'
@@ -44,7 +45,6 @@ class User < ActiveRecord::Base
     User.genders[ User.find(id).gender.to_sym ]
   end
 
-# Maybe use enums here
   def age_category
     bday = User.find(id).bday.split('/')
     bday = DateTime.new(bday[2].to_i, bday[0].to_i, bday[1].to_i)
