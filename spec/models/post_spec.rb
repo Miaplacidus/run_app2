@@ -58,7 +58,6 @@ RSpec.describe Post, :type => :model do
   end
 
   context "when post is public" do
-    # let!(:post) { create(:post) }
     it "creates associated commitment for organizer" do
       post = create(:post, circle_id: nil)
       expect(Commitment.exists?(post_id: post.id)).to be true
