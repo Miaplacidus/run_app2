@@ -5,9 +5,11 @@ class Circle < ActiveRecord::Base
   # A post can be both associated with a circle and marked public so other users can join the circle if they would like to
   # join the run
 
-  # before_save do |record|
-    # Geocoder.coordinates(record.)
-  # end
+  before_save do |record|
+    CircleUser.create(user_id: record.admin_id, circle_id: record.id)
+    location = Geocoder.coordinates(record.city)
+    record.location = "POINT(#{location[1]} #{location[0]})"
+  end
 
   belongs_to :admin, class_name:"User"
   has_many :circle_users
@@ -21,22 +23,9 @@ class Circle < ActiveRecord::Base
 
   scope :get_user_circles, -> (user_id) { where(id: CircleUsers.where(user_id: user_id).map { |circle_user| circle_user.circle_id }) }
   scope :get_admin_circles, -> (user_id) { where(admin_id: user_id) }
-  # scope :filter_by_location, -> { |user_lat, user_long, radius|  where("")}
-  # scope :sent_challenges, -> { |id| where(id: id).first.sent_challenges.order(:created_at) }
-  # scope :received_challenges, -> { |id| where(id: id).first.received_challenges.order(:created_at) }
+  miles_to_meters = 1609.34
+  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*miles_to_meters) }
+  scope :filter_by_full, -> (filters) { select { |circle| CircleUsers.where(circle_id: circle.id).count < circle.max_members }.filter_by_location(filters) }
 
-
-  def self.filter_by_location(user_lat, user_long, radius)
-    Circle.all.select do |circle|
-      Haversine.distance(user_lat, user_long, circle.latitude, circle.longitude).to_mi <= radius
-    end
-  end
-
-  def self.filter_by_full(user_lat, user_long, radius)
-    circles = self.filter_by_location(user_lat, user_long, radius)
-    circles.select do |circle|
-      CircleUsers.where(circle_id: circle.id).length < circle.max_members
-    end
-  end
 end
 

@@ -14,4 +14,6 @@ RSpec.describe Circle, :type => :model do
     expect(build(:circle, location: nil))
   end
 
+
+
 end
