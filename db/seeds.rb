@@ -84,11 +84,11 @@ case Rails.env
       end
     end
 
-    FactoryGirl.create_list(:user, 5)
-    FactoryGirl.create_list(:wallet, 5)
-    FactoryGirl.create_list(:circle, 10)
-    FactoryGirl.create_list(:post, 15)
+    FactoryGirl.create_list(:user, 3)
+    FactoryGirl.create_list(:wallet, 3)
+    FactoryGirl.create_list(:circle, 5)
+    FactoryGirl.create_list(:post, 10)
     FactoryGirl.create_list(:join_request, 5)
-    FactoryGirl.create_list(:challenge, 5)
-    FactoryGirl.create_list(:commitment, 5)
+    FactoryGirl.create_list(:challenge, 3)
+    FactoryGirl.create_list(:commitment, 3)
 end
