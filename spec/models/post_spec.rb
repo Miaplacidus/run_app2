@@ -6,6 +6,10 @@ RSpec.describe Post, :type => :model do
     expect(create(:post)).to be_valid
   end
 
+  it "is valid without an address" do
+    expect(build(:post, address: nil)).to be_valid
+  end
+
   it "is invalid without an organizer" do
     expect(build(:post, organizer_id: nil)).to_not be_valid
   end
@@ -28,10 +32,6 @@ RSpec.describe Post, :type => :model do
 
   it "is invalid without a minimum distance" do
     expect(build(:post, min_distance: nil)).to_not be_valid
-  end
-
-  it "is invalid without an address" do
-    expect(build(:post, address: nil)).to_not be_valid
   end
 
   it "is invalid without a location" do
@@ -79,6 +79,10 @@ RSpec.describe Post, :type => :model do
   end
 
   xit "returns an array of locations sorted by distance from a point" do
+  end
 
+  it "formats the address" do
+    post = create(:post, address: "2035 w wabansia ave, chicago, il, 60647")
+    expect(post.address).to eq("2035 West Wabansia Avenue, Chicago, IL 60647, USA")
   end
 end

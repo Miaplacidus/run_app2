@@ -24,7 +24,8 @@ RSpec.describe PostsController, :type => :controller do
   # Post. As you add validations to Post, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    # skip("Add a hash of attributes valid for your model")
+    FactoryGirl.attributes_for(:post)
   }
 
   let(:invalid_attributes) {

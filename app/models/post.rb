@@ -1,12 +1,9 @@
 class Post < ActiveRecord::Base
   # Change class name to scheduled_runs or event
-  before_save do |record|
-    if !record.circle_id || ( record.organizer_id != Circle.find(record.circle_id).admin_id )
-      Commitment.create( post_id: record.id, user_id: record.organizer_id, amount: record.min_amt )
-    end
 
-    record.update( address: Geocoder.address([ record.location.latitude, record.location.longitude ]) )
-  end
+  before_validation :format_address
+  before_validation :non_circle_posts_public
+  after_create :create_organizer_commitment
 
   enum pace: ['All/Any Levels', 'Military: 6 min and under/mile', 'Advanced: 6-7 min/mi', 'High Intermediate: 7-8 min/mi', 'Intermediate: 8-9 min/mi', 'Beginner: 9-10 min/mi', 'Jogger: 10-11 min/mi', 'Speedwalker: 11-12 min/mi', 'Sprints: 12+ min/mi']
   enum age_pref: ['No preference', '18-23', '24-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+']
@@ -20,7 +17,7 @@ class Post < ActiveRecord::Base
 
   validates_presence_of :organizer_id, :time, :pace, :age_pref, :gender_pref, :min_distance, :address, :location
   validates_inclusion_of :complete, :in => [true, false]
-  validates_inclusion_of :max_runners, :in => [2, 5, 8, 11, 14]
+  validates_inclusion_of :max_runners, :in => [4, 7, 11, 14]
   validates_inclusion_of :min_amt, :in => [0, 5, 10, 15, 20]
   validates_inclusion_of :min_distance, :in => [1, 2, 3, 5, 9, 13, 17, 22, 26]
 
@@ -49,5 +46,22 @@ class Post < ActiveRecord::Base
 
   def time_in_tz
     Time.zone.parse(time.to_s).strftime("%a %B %e, %Y at %l:%M%P, %:z") + Time.zone.to_s
+  end
+
+  private
+  def create_organizer_commitment
+    if !self.circle_id || ( self.organizer_id != Circle.find(self.circle_id).admin_id )
+      Commitment.create( post_id: self.id, user_id: self.organizer_id, amount: self.min_amt )
+    end
+  end
+
+  def format_address
+    self.address = Geocoder.address( [self.location.latitude, self.location.longitude] )
+  end
+
+  def non_circle_posts_public
+    if !self.circle_id
+      self.is_public = true
+    end
   end
 end
