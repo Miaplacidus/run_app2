@@ -1,13 +1,12 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :circle do
-    name "DevMynd"
-    max_members 1
-    location "POINT(#{-87.6789658} #{41.9120736})"
-    description "We code. We run. We WIN."
-    level 1
-    city "Chi-Town"
+  factory :circle, aliases: [:sender, :recipient] do
+    name    { Faker::Company.name + Faker::Company.suffix}
+    sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-7} #{41.9120736 - n*10**-7} )" }
+    description { Faker::Lorem.paragraph }
+    level { rand(0..8) }
+    city    "Chicago, IL, USA"
     admin
   end
 end
