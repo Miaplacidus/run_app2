@@ -73,6 +73,11 @@ GEM
       execjs
     coffee-script-source (1.8.0)
     colored (1.2)
+    countries (0.9.3)
+      currencies (~> 0.4.2)
+    country_select (2.1.0)
+      countries (~> 0.9, >= 0.9.3)
+    currencies (0.4.2)
     database_cleaner (1.3.0)
     diff-lcs (1.2.5)
     dotenv (0.11.1)
@@ -274,6 +279,8 @@ DEPENDENCIES
   capybara
   capybara-screenshot
   coffee-rails (~> 4.0.0)
+  countries
+  country_select
   database_cleaner
   dotenv-rails
   factory_girl_rails (~> 4.0)
