@@ -6,6 +6,8 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'factory_girl_rails'
 require 'factory_girl'
+require 'vcr'
+require 'webmock/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -51,4 +53,9 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
   config.include FactoryGirl::Syntax::Methods
+end
+
+VCR.configure do |config|
+  config.cassette_library_dir = "spec/vcr_cassettes"
+  config.hook_into :webmock
 end

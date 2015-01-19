@@ -16,7 +16,6 @@ case Rails.env
     Commitment.delete_all
     JoinRequest.delete_all
     Post.delete_all
-    PostUser.delete_all
     User.delete_all
     Wallet.delete_all
 
@@ -32,8 +31,7 @@ case Rails.env
 
       factory :circle, aliases: [:sender, :recipient] do
         name    { Faker::Company.name }
-        max_members { [5, 15, 30, 60].sample }
-        sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-7} #{41.9120736 + n*10**-7} )" }
+        sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-7} #{41.9120736 - n*10**-7} )" }
         description { Faker::Lorem.paragraph }
         level { rand(0..8) }
         city    "Chicago"
@@ -63,10 +61,10 @@ case Rails.env
         min_amt { [0, 5, 10, 15, 20].sample }
         age_pref { rand(0..8) }
         gender_pref { rand(0..2) }
-        max_runners { [3, 5, 8, 11, 14].sample }
-        min_distance { [1, 3, 5, 10, 15].sample }
-        sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-2} #{41.9120736 + n*10**-3} )" }
-        after(:create) { |post| post.update(address: Geocoder.address([post.location.latitude, post.location.longitude])) }
+        max_runners { [4, 7, 11, 14].sample }
+        min_distance { [1, 2, 3, 5, 9, 13, 17, 22, 26].sample }
+        sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-6} #{41.9120736 + n*10**-7} )" }
+        before(:create) { |post| post.update(address: Geocoder.address([post.location.latitude, post.location.longitude])) }
       end
 
       factory :user, aliases: [:organizer, :admin] do

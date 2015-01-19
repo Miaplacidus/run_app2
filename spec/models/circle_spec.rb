@@ -7,13 +7,14 @@ RSpec.describe Circle, :type => :model do
   end
 
   it "is invalid without a city" do
-
+    expect(build(:circle, city: nil)).to_not be_valid
   end
 
   it "is invalid without a location" do
     expect(build(:circle, location: nil))
   end
 
+  it "" do
 
-
+  end
 end

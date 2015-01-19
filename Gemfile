@@ -48,6 +48,8 @@ group :development, :test do
   gem "rubocop"
   gem "selenium-webdriver"
   gem "teaspoon"
+  gem "vcr", "~> 2.9.3"
+  gem "webmock", "~> 1.20.4"
 end
 
 group :development do

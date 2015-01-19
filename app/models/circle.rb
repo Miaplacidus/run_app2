@@ -22,6 +22,7 @@ class Circle < ActiveRecord::Base
   has_many :received_challenges, class_name: "Challenge", foreign_key: "recipient_id"
 
   validates_uniqueness_of :name
+  validates_presence_of :city
   validate :max_members_reached?
 
   scope :get_user_circles, -> (user_id) { where(id: CircleUsers.where(user_id: user_id).map { |circle_user| circle_user.circle_id }) }
@@ -31,6 +32,12 @@ class Circle < ActiveRecord::Base
   scope :filter_by_full, -> (filters) { select { |circle| CircleUsers.where(circle_id: circle.id).count < circle.max_members }.filter_by_location(filters) }
 
   private
+  def get_coords_from_address
+    CircleUser.create(user_id: record.admin_id, circle_id: record.id)
+    location = Geocoder.coordinates(record.city)
+    record.location = "POINT(#{location[1]} #{location[0]})"
+  end
+
   def max_members_reached?
     self.members.count <= 100
   end

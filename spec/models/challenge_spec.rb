@@ -2,16 +2,24 @@ require 'rails_helper'
 
 RSpec.describe Challenge, :type => :model do
 
+  before :each do
+    VCR.insert_cassette "google_maps_api"
+  end
+
+  after :each do
+    VCR.eject_cassette "google_maps_api"
+  end
+
   it "has a valid factory" do
-    expect(build(:challenge)).to be_valid
+      expect(build(:challenge)).to be_valid
   end
 
   it "is invalid without a name" do
-    expect( build(:challenge, name: nil) ).to_not be_valid
+      expect( build(:challenge, name: nil) ).to_not be_valid
   end
 
   it "is invalid without a sender" do
-    expect( build(:challenge, sender_id: nil) ).to_not be_valid
+      expect( build(:challenge, sender_id: nil) ).to_not be_valid
   end
 
   it "is invalid without a recipient" do
