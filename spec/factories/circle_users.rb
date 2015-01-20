@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :circle_user do
-    circle_id 1
-    user_id 1
+    circle
+    user
   end
 end

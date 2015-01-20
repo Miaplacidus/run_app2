@@ -5,11 +5,11 @@ class Circle < ActiveRecord::Base
   # A post can be both associated with a circle and marked public so other users can join the circle if they would like to
   # join the run
 
-  before_create do |record|
-    CircleUser.create(user_id: record.admin_id, circle_id: record.id)
-    location = Geocoder.coordinates(record.city)
-    record.location = "POINT(#{location[1]} #{location[0]})"
+  before_validation do |record|
+    get_circle_coords
   end
+
+  after_create :add_admin_to_circle
 
   enum level: ['All/Any Levels', 'Military: 6 min and under/mile', 'Advanced: 6-7 min/mi', 'High Intermediate: 7-8 min/mi', 'Intermediate: 8-9 min/mi', 'Beginner: 9-10 min/mi', 'Jogger: 10-11 min/mi', 'Speedwalker: 11-12 min/mi', 'Sprints: 12+ min/mi']
 
@@ -22,24 +22,24 @@ class Circle < ActiveRecord::Base
   has_many :received_challenges, class_name: "Challenge", foreign_key: "recipient_id"
 
   validates_uniqueness_of :name
-  validates_presence_of :city
-  validate :max_members_reached?
+  validates_presence_of :city, :location
 
-  scope :get_user_circles, -> (user_id) { where(id: CircleUsers.where(user_id: user_id).map { |circle_user| circle_user.circle_id }) }
+  scope :get_user_circles, -> (user_id) { where(id: CircleUser.where(user_id: user_id).map { |circle_user| circle_user.circle_id }) }
   scope :get_admin_circles, -> (user_id) { where(admin_id: user_id) }
   miles_to_meters = 1609.34
   scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*miles_to_meters) }
-  scope :filter_by_full, -> (filters) { select { |circle| CircleUsers.where(circle_id: circle.id).count < circle.max_members }.filter_by_location(filters) }
+  scope :filter_by_full, -> (filters) { select { |circle| CircleUser.where(circle_id: circle.id).count < circle.max_members }.filter_by_location(filters) }
 
   private
-  def get_coords_from_address
-    CircleUser.create(user_id: record.admin_id, circle_id: record.id)
-    location = Geocoder.coordinates(record.city)
-    record.location = "POINT(#{location[1]} #{location[0]})"
+  def get_circle_coords
+    coordinates = Geocoder.coordinates(city)
+    return false if !coordinates
+    self.location = "POINT(#{coordinates[1]} #{coordinates[0]})"
   end
 
-  def max_members_reached?
-    self.members.count <= 100
+  def add_admin_to_circle
+    CircleUser.create(user_id: admin_id, circle_id: id)
   end
+
 end
 
