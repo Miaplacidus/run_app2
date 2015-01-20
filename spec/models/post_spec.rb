@@ -65,7 +65,7 @@ RSpec.describe Post, :type => :model do
   end
 
   context "when post is associated with a circle" do
-    it "does create associated commitment for circle members" do
+    it "creates associated commitment for circle members" do
       post = create(:post)
       expect(Commitment.exists?(post_id: post.id)).to be true
     end
