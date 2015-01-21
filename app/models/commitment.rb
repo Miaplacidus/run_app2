@@ -8,7 +8,7 @@ class Commitment < ActiveRecord::Base
   scope :user_commits, lambda { |user_id| where(user_id: user_id) }
 
   def max_runners_reached?
-    if Commitment.where(post_id: post_id).count > Post.find(post_id).max_runners
+    if Commitment.where(post_id: post_id).count >= Post.find(post_id).max_runners
       errors.add(:max_runners, "post has reached max num of runners")
     end
   end

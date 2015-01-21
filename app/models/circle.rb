@@ -40,6 +40,5 @@ class Circle < ActiveRecord::Base
   def add_admin_to_circle
     CircleUser.create(user_id: admin_id, circle_id: id)
   end
-
 end
 
