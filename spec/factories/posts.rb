@@ -13,7 +13,6 @@ FactoryGirl.define do
     gender_pref { rand(0..2) }
     max_runners { [4, 7, 11, 14].sample }
     min_distance { [1, 2, 3, 5, 9, 13, 17, 22, 26].sample }
-    # sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-6} #{41.9120736 + n*10**-7} )" }
     location "POINT(-87.6789658 41.9120736)"
     is_public { [true, false].sample }
   end
