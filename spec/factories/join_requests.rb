@@ -4,6 +4,6 @@ FactoryGirl.define do
   factory :join_request do
     circle
     user
-    accepted false
+    state { ["pending", "accepted", "rejected"].sample }
   end
 end
