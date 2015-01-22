@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :commitment do
-    amount 1.5
+    amount { [0, 5, 10, 15, 20].sample }
     fulfilled false
     post
     user

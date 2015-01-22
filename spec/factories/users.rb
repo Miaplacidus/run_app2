@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :user, aliases: [ :organizer, :admin ] do
     first_name { Faker::Name.first_name }
-    gender { rand(0..2)}
+    gender { rand(0..2) }
     email  { Faker::Internet.email }
     bday "03/14/1987"
     rating 1.5
