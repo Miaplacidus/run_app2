@@ -14,7 +14,6 @@ gem "country_select"
 gem "font-awesome-rails", "~>4.2.0"
 gem "geocoder"
 gem "gmaps4rails"
-gem 'haversine'
 gem "jbuilder", "~> 2.0"
 gem "jquery-rails"
 gem "lodash-rails"
@@ -36,7 +35,6 @@ group :development, :test do
   gem "dotenv-rails"
   gem "factory_girl_rails", "~> 4.0", :require => false
   gem "faker"
-  # gem "guard-rspec"
   gem "letter_opener"
   gem "magic_encoding"
   gem "magic_lamp"
@@ -48,10 +46,13 @@ group :development, :test do
   gem "rubocop"
   gem "selenium-webdriver"
   gem "teaspoon"
-  gem "vcr", "~> 2.9.3"
-  gem "webmock", "~> 1.20.4"
 end
 
 group :development do
   gem "better_errors"
+end
+
+group :test do
+  gem "vcr", "~> 2.9.3"
+  gem "webmock", "~> 1.20.4"
 end
