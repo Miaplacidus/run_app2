@@ -25,16 +25,15 @@ case Rails.env
         sender
         recipient
         post
-        state { ["pending", "accepted", "rejected"].sample }
+        state { ["pending", "accepted", "rejected", "completed"].sample }
         notes { Faker::Lorem.paragraph }
       end
 
       factory :circle, aliases: [:sender, :recipient] do
         name    { Faker::Company.name }
-        sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-7} #{41.9120736 - n*10**-7} )" }
         description { Faker::Lorem.paragraph }
         level { rand(0..8) }
-        city    "Chicago"
+        city    "Chicago, IL, USA"
         admin
       end
 
@@ -48,7 +47,7 @@ case Rails.env
       factory :join_request do
         circle
         user
-        accepted    { [true, false].sample }
+        state { ["pending", "accepted", "rejected"].sample }
       end
 
       factory :post do
