@@ -62,8 +62,9 @@ case Rails.env
         gender_pref { rand(0..2) }
         max_runners { [4, 7, 11, 14].sample }
         min_distance { [1, 2, 3, 5, 9, 13, 17, 22, 26].sample }
-        sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-6} #{41.9120736 + n*10**-7} )" }
-        before(:create) { |post| post.update(address: Geocoder.address([post.location.latitude, post.location.longitude])) }
+        # sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-6} #{41.9120736 + n*10**-7} )" }
+        sequence(:address) { |n| "203#{5-n} West Wabansia Ave, Chicago, IL, USA" }
+        # before(:create) { |post| post.update(address: Geocoder.address([post.location.latitude, post.location.longitude])) }
       end
 
       factory :user, aliases: [:organizer, :admin] do
@@ -86,6 +87,6 @@ case Rails.env
     FactoryGirl.create_list(:circle, 5)
     FactoryGirl.create_list(:post, 10)
     FactoryGirl.create_list(:join_request, 5)
-    FactoryGirl.create_list(:challenge, 3)
+    FactoryGirl.create_list(:challenge, 5)
     FactoryGirl.create_list(:commitment, 3)
 end

@@ -13,7 +13,8 @@ FactoryGirl.define do
     gender_pref { rand(0..2) }
     max_runners { [4, 7, 11, 14].sample }
     min_distance { [1, 2, 3, 5, 9, 13, 17, 22, 26].sample }
-    location "POINT(-87.6789658 41.9120736)"
+    # location "POINT(-87.6789658 41.9120736)"
+    sequence(:address) { |n| "203#{5+n} West Wabansia Ave, Chicago, IL, USA" }
     is_public { [true, false].sample }
   end
 end
