@@ -56,7 +56,7 @@
 
       <div class="field">
         <%= f.label :minimum_distance %>
-        <%= f.select(:min_distance, options_for_select([["1 mi", 0], ["3 mi", 3], ["5 mi", 5]])) %>
+        <%= f.select(:min_distance, options_for_select([["1 mi", 1], ["2 mi", 2], ["3 mi", 3], ["5 mi", 5], ["9 mi", 9], ["13 mi", 13], ["17 mi", 17], ["22 mi", 22], ["26 mi", 26]])) %>
       </div>
 
       <div class="field">
@@ -76,7 +76,7 @@
 
       <div class="field">
         <%= f.label :max_runners %><br>
-        <%= f.select(:max_runners, options_for_select((2..14).step(3))) %>
+        <%= f.select(:max_runners, options_for_select((4..14).step(3))) %>
       </div>
 
       <div class="field">

@@ -42,11 +42,7 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-
-    logger.debug "params, motherfucker!: #{params}"
-
     @post = Post.create(post_params)
-
     render json: @post, serializer: PostSerializer
   end
 

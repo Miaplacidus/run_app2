@@ -2,17 +2,23 @@ require 'rails_helper'
 
 RSpec.describe User, :type => :model do
 
-  xit "is invalid without an email" do
-    expect(build(:user, email: nil)).to_not be_valid
+  it "has a valid factory" do
+    expect( create(:user) ).to be_valid
   end
 
-  xit "is invalid without a first name" do
-    expect(build(:user, first_name: nil)).to_not be_valid
-  end
+  describe "validations" do
+    it "is invalid without an email" do
+      expect(build(:user, email: nil)).to_not be_valid
+    end
 
-  it "is invalid if emails are not unique" do
-    create(:user, email: "iamrobot@gmail.com")
-    expect(build(:user, email: "iamrobot@gmail.com")).to_not be_valid
+    it "is invalid without a first name" do
+      expect(build(:user, first_name: nil)).to_not be_valid
+    end
+
+    it "is invalid if emails are not unique" do
+      create(:user, email: "iamrobot@gmail.com")
+      expect(build(:user, email: "iamrobot@gmail.com")).to_not be_valid
+    end
   end
 
   it "returns the user's gender" do
