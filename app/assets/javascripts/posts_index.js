@@ -27,10 +27,10 @@ $(document).ready(function(){
 // TODO: Nest geolocation or provide refresh button or loading bar
   $('#radius_select, #gender_select, #pace_select, #age_select, #minimum_commitment_select').change(submit_post_filters_form);
   $('#post_filters_form').submit(submit_post_filters_form);
-  $('#new_post').submit(submit_post_create_form);
+  // $('#new_post').submit(submit_post_create_form);
+  $("#new_post_submit").click(submit_post_create_form);
 
   function submit_post_filters_form(){
-    // missing? event.preventDefault();
     $.ajax({
       type: "GET",
       url: "/posts/filter.js",
@@ -60,7 +60,6 @@ $(document).ready(function(){
         setMapValues(json_post);
       }
     });
-    // $("#new_post")[0].reset();
   }
 
   $('#postcreatemodal').on('hidden.bs.modal', function () {

@@ -29,12 +29,6 @@ class PostsController < ApplicationController
     render json: @posts, each_serializer: PostSerializer
   end
 
-
-  # GET /posts/new
-  def new
-    @post = Post.new
-  end
-
   # GET /posts/1/edit
   def edit
   end
