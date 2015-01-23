@@ -1,6 +1,7 @@
 class Post < ActiveRecord::Base
   # Change class name to scheduled_runs or event
 
+  before_validation :get_location
   before_validation :format_address
   before_validation :non_circle_posts_public
   after_create :create_organizer_commitment
@@ -27,9 +28,9 @@ class Post < ActiveRecord::Base
   scope :upcoming_admin_runs, -> (user_id) { where(organizer_id: user_id).where('time < ?', 1.hour.ago) }
 # filters = {user_lat, user_lon, radius, gender_pref, user_id}
   scope :filter_by_gender, -> (filters) {
-    if filters[:gender_pref].to_i == 3
+    if filters[:gender_pref] == 3
       where( "gender_pref = ? OR gender_pref = ?", 0, User.genders[ User.find(filters[:user_id]).gender.to_sym ])
-    elsif filters[:gender_pref].to_i == 0
+    elsif filters[:gender_pref] == 0
       where( "gender_pref = ?", 0 )
     else
       where( "gender_pref = ?", User.genders[ User.find(filters[:user_id]).gender.to_sym])
@@ -38,10 +39,22 @@ class Post < ActiveRecord::Base
 # TODO: make filter params more explicit
 # TODO: add ordering by distance from user
   miles_to_meters = 1609.34
-  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon].to_f, filters[:user_lat].to_f, filters[:radius].to_f*miles_to_meters) }
-  scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: filters[:age_pref].to_i) }
-  scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace].to_i) }
-  scope :filter_by_time, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", filters[:start_time], filters[:end_time]) }
+  scope :filter_by_location, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon], filters[:user_lat], filters[:radius]*miles_to_meters) }
+  scope :filter_by_age, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(age_pref: filters[:age_pref]) }
+  scope :filter_by_pace, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where(pace: filters[:pace]) }
+  scope :filter_by_time, -> (filters) {
+    start_date = filters[:start_time][:day] + '/' + filters[:start_time][:month] + '/' + filters[:start_time][:year]
+    start_hour = filters[:start_time][:hour] + ':' + filters[:start_time][:minute]
+    start_time = start_date + " " + start_hour
+
+    end_date = filters[:end_time][:day] + '/' + filters[:end_time][:month] + '/' + filters[:end_time][:year]
+    end_hour = filters[:end_time][:hour] + ':' + filters[:start_time][:minute]
+    end_time = end_date + " " + end_hour
+
+    start_time = Time.zone.parse(start_time).utc
+    end_time = Time.zone.parse(end_time).utc
+    filter_by_location(filters).filter_by_gender(filters).where("time >= ? AND time <= ?", start_time, end_time)
+  }
   scope :filter_by_commitment, -> (filters) { filter_by_location(filters).filter_by_gender(filters).where("min_amt <= ?", filters[:min_amt]) }
 
   def time_in_tz
@@ -57,6 +70,12 @@ class Post < ActiveRecord::Base
 
   def format_address
     self.address = Geocoder.address( [self.location.latitude, self.location.longitude] )
+  end
+
+  def get_location
+    geo_loc = Geocoder.coordinates(self.address)
+    return false if !geo_loc
+    self.location = "POINT(#{geo_loc[1]} #{geo_loc[0]})"
   end
 
   def non_circle_posts_public

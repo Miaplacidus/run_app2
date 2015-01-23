@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :check_gender, only: [:index]
+  before_action :sanitize_params, only: [:create, :filter]
+  before_action :format_time, only: [:create]
 
   # GET /posts
   # GET /posts.json
@@ -19,17 +21,6 @@ class PostsController < ApplicationController
       when age_filter
         @posts = Post.filter_by_age(post_filter_params)
       when time_filter
-        start_date = params[:start_time][:day] + '/' + params[:start_time][:month] + '/' + params[:start_time][:year]
-        start_hour = params[:start_time][:hour] + ':' + params[:start_time][:minute]
-        start_time = start_date + " " + start_hour
-
-        end_date = params[:end_time][:day] + '/' + params[:end_time][:month] + '/' + params[:end_time][:year]
-        end_hour = params[:end_time][:hour] + ':' + params[:start_time][:minute]
-        end_time = end_date + " " + end_hour
-
-        params[:start_time] = Time.zone.parse(start_time).utc
-        params[:end_time] = Time.zone.parse(end_time).utc
-
         @posts = Post.filter_by_time(post_filter_params)
       when commitment_filter
         @posts = Post.filter_by_commitment(post_filter_params)
@@ -51,13 +42,8 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    geo_loc = Geocoder.coordinates(params[:post][:address])
-    params[:post][:location] = "POINT(#{geo_loc[1]} #{geo_loc[0]})"
 
-    date = params[:day][:day] + '/' + params[:month_select] + '/' + params[:year][:year]
-    hour = params[:date][:hour] + ':' + params[:date][:minute]
-    time = date + " " + hour
-    params[:post][:time] = Time.zone.parse(time).utc
+    logger.debug "params, motherfucker!: #{params}"
 
     @post = Post.create(post_params)
 
@@ -102,11 +88,11 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:circle_id, :organizer_id, :location, :time, :pace, :notes, :complete, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address)
+      params.require(:post).permit(:circle_id, :organizer_id, :time, :pace, :notes, :complete, :min_amt, :age_pref, :gender_pref, :max_runners, :min_distance, :address)
     end
 
     def post_filter_params
-      params.permit(:user_id, :radius, :gender_pref, :user_lat, :user_lon, :start_time, :end_time, :pace, :age_pref, :min_amt)
+      params.permit(:user_id, :radius, :gender_pref, :user_lat, :user_lon, :pace, :age_pref, :min_amt, start_time: [:year, :month, :day, :hour, :minute], end_time: [:year, :month, :day, :hour, :minute])
     end
 
     def check_gender
@@ -122,6 +108,13 @@ class PostsController < ApplicationController
           return false
         end
       end
+    end
+
+    def format_time
+      date = params[:day][:day] + '/' + params[:month_select] + '/' + params[:year][:year]
+      hour = params[:date][:hour] + ':' + params[:date][:minute]
+      time = date + " " + hour
+      params[:post][:time] = Time.zone.parse(time).utc
     end
 
     def gender_and_location_filter
@@ -142,6 +135,34 @@ class PostsController < ApplicationController
 
     def commitment_filter
       "4"
+    end
+
+    def hash_strings_to_num(h, search)
+      if h.fetch(search, false)
+        if h[search].include? '.'
+          h[search] = h[search].to_f
+          return true
+        else
+          h[search] = h[search].to_i
+          return true
+        end
+      end
+
+      h.keys.each do |k|
+        stop_search = hash_strings_to_num(h[k], search) if h[k].is_a? Hash
+        return stop_search if stop_search
+      end
+
+      true
+    end
+
+    def sanitize_params
+      hash_strings_to_num(params, :radius)
+      hash_strings_to_num(params, :age_pref)
+      hash_strings_to_num(params, :gender_pref)
+      hash_strings_to_num(params, :user_lat)
+      hash_strings_to_num(params, :user_lon)
+      hash_strings_to_num(params, :pace)
     end
 
 end
