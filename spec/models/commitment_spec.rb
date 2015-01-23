@@ -8,6 +8,10 @@ RSpec.describe Commitment, :type => :model do
   end
 
   describe "validations", vcr: vcr_options do
+    it "is invalid without an amount" do
+      expect( build(:commitment, amount: nil) ).to_not be_valid
+    end
+
     it "is invalid if the max number of runners has been reached" do
       post = create(:post, max_runners: 4)
       create_list(:commitment, 3, post: post)
