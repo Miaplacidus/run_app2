@@ -8,7 +8,7 @@ class CreateJoinRequests < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index("join_requests", "user_id")
-    add_index("join_requests", "circle_id")
+    add_index('join_requests', 'user_id')
+    add_index('join_requests', 'circle_id')
   end
 end

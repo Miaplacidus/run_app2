@@ -13,6 +13,6 @@ class CreateCircles < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index("circles", "admin_id")
+    add_index('circles', 'admin_id')
   end
 end

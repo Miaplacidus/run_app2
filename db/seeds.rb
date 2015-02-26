@@ -25,7 +25,7 @@ case Rails.env
         sender
         recipient
         post
-        state { ["pending", "accepted", "rejected", "completed"].sample }
+        state { %w(pending accepted rejected completed).sample }
         notes { Faker::Lorem.paragraph }
       end
 
@@ -33,7 +33,7 @@ case Rails.env
         name    { Faker::Company.name }
         description { Faker::Lorem.paragraph }
         level { rand(0..8) }
-        city    "Chicago, IL, USA"
+        city 'Chicago, IL, USA'
         admin
       end
 
@@ -47,7 +47,7 @@ case Rails.env
       factory :join_request do
         circle
         user
-        state { ["pending", "accepted", "rejected"].sample }
+        state { %w(pending accepted rejected).sample }
       end
 
       factory :post do
@@ -63,17 +63,17 @@ case Rails.env
         max_runners { [4, 7, 11, 14].sample }
         min_distance { [1, 2, 3, 5, 9, 13, 17, 22, 26].sample }
         # sequence(:location) { |n| "POINT(#{-87.6789658 + n*10**-6} #{41.9120736 + n*10**-7} )" }
-        sequence(:address) { |n| "203#{5-n} West Wabansia Ave, Chicago, IL, USA" }
+        sequence(:address) { |n| "203#{5 - n} West Wabansia Ave, Chicago, IL, USA" }
         # before(:create) { |post| post.update(address: Geocoder.address([post.location.latitude, post.location.longitude])) }
       end
 
       factory :user, aliases: [:organizer, :admin] do
         first_name    { Faker::Name.first_name }
-        gender    { rand(0..2)}
+        gender    { rand(0..2) }
         email   { Faker::Internet.email }
         bday   { Faker::Date.between(70.years.ago, Date.today) }
         fbid    { Faker::Code.ean }
-        img_url   "http://dims.vetstreet.com/dims3/MMAH/thumbnail/590x420/quality/90/?url=http%3A%2F%2Fs3.amazonaws.com%2Fassets.prod.vetstreet.com%2F5b%2Ff9%2F6fd60f5e406d89d49934d1f75104%2Fgrumpy-cat-590sm121812.jpg"
+        img_url 'http://dims.vetstreet.com/dims3/MMAH/thumbnail/590x420/quality/90/?url=http%3A%2F%2Fs3.amazonaws.com%2Fassets.prod.vetstreet.com%2F5b%2Ff9%2F6fd60f5e406d89d49934d1f75104%2Fgrumpy-cat-590sm121812.jpg'
       end
 
       factory :wallet do

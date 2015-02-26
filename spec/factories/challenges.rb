@@ -6,7 +6,7 @@ FactoryGirl.define do
     sender
     recipient
     post
-    state { ["pending", "accepted", "rejected", "completed"].sample }
+    state { %w(pending accepted rejected completed).sample }
     notes { Faker::Lorem.paragraph }
   end
 end

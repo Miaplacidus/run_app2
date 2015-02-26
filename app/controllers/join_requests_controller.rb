@@ -62,13 +62,14 @@ class JoinRequestsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_join_request
-      @join_request = JoinRequest.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def join_request_params
-      params.require(:join_request).permit(:cicle_id, :user_id, :accepted)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_join_request
+    @join_request = JoinRequest.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def join_request_params
+    params.require(:join_request).permit(:cicle_id, :user_id, :accepted)
+  end
 end

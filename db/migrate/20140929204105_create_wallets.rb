@@ -7,6 +7,6 @@ class CreateWallets < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index("wallets", "user_id")
+    add_index('wallets', 'user_id')
   end
 end

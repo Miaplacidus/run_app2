@@ -2,10 +2,10 @@
 
 FactoryGirl.define do
   factory :circle, aliases: [:sender, :recipient] do
-    name    { Faker::Company.name + Faker::Company.suffix}
+    name    { Faker::Company.name + Faker::Company.suffix }
     description { Faker::Lorem.paragraph }
     level { rand(0..8) }
-    city    "Chicago, IL, USA"
+    city 'Chicago, IL, USA'
     admin
   end
 end

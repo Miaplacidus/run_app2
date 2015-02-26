@@ -11,3 +11,15 @@ body {
   padding-top: 50px;
   font-family: 'Ubuntu', sans-serif;
 }
+
+ul.nav li a {
+  padding: 20px;
+}
+
+ul.nav {
+  color: $salmon;
+}
+
+.navbar {
+  background-color: $off-white;
+}

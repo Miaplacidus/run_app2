@@ -3,6 +3,6 @@ class PostSerializer < ActiveModel::Serializer
 
   has_many :commitments
   has_one :challenge
-  has_one :organizer, class_name:"User", foreign_key:"organizer_id"
+  has_one :organizer, class_name: 'User', foreign_key: 'organizer_id'
   has_one :circle
 end

@@ -9,7 +9,7 @@ class CreateCommitments < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index("commitments", "post_id")
-    add_index("commitments", "user_id")
+    add_index('commitments', 'post_id')
+    add_index('commitments', 'user_id')
   end
 end

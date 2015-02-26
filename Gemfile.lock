@@ -62,16 +62,8 @@ GEM
       launchy
     childprocess (0.5.3)
       ffi (~> 1.0, >= 1.0.11)
-    choice (0.1.6)
     cliver (0.3.2)
     coderay (1.1.0)
-    coffee-rails (4.0.1)
-      coffee-script (>= 2.2.0)
-      railties (>= 4.0.0, < 5.0)
-    coffee-script (2.3.0)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.8.0)
     colored (1.2)
     countries (0.9.3)
       currencies (~> 0.4.2)
@@ -103,6 +95,8 @@ GEM
       railties (>= 3.2, < 5.0)
     geocoder (1.2.5)
     gmaps4rails (2.1.2)
+    haml (4.0.5)
+      tilt
     hashie (3.3.1)
     hike (1.2.3)
     i18n (0.6.11)
@@ -183,11 +177,6 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.1.6)
       sprockets-rails (~> 2.0)
-    rails-erd (1.1.0)
-      activerecord (>= 3.0)
-      activesupport (>= 3.0)
-      choice (~> 0.1.6)
-      ruby-graphviz (~> 1.0.4)
     railties (4.1.6)
       actionpack (= 4.1.6)
       activesupport (= 4.1.6)
@@ -222,7 +211,6 @@ GEM
       powerpack (~> 0.0.6)
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.4)
-    ruby-graphviz (1.0.9)
     ruby-progressbar (1.6.0)
     ruby-units (1.4.5)
     rubyzip (1.1.6)
@@ -238,6 +226,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    shoulda-matchers (2.7.0)
+      activesupport (>= 3.0.0)
     slop (3.6.0)
     sprockets (2.11.0)
       hike (~> 1.2)
@@ -259,9 +249,6 @@ GEM
     tilt (1.4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (2.5.3)
-      execjs (>= 0.3.0)
-      json (>= 1.8.0)
     vcr (2.9.3)
     webmock (1.20.4)
       addressable (>= 2.3.6)
@@ -284,7 +271,6 @@ DEPENDENCIES
   browser-timezone-rails
   capybara
   capybara-screenshot
-  coffee-rails (~> 4.0.0)
   countries
   country_select
   database_cleaner
@@ -294,6 +280,7 @@ DEPENDENCIES
   font-awesome-rails (~> 4.2.0)
   geocoder
   gmaps4rails
+  haml
   jbuilder (~> 2.0)
   jquery-rails
   letter_opener
@@ -307,15 +294,14 @@ DEPENDENCIES
   pry
   pry-nav
   rails (= 4.1.6)
-  rails-erd
   rspec-rails
   rubocop
   ruby-units
   sass-rails (~> 4.0.3)
   selenium-webdriver
+  shoulda-matchers
   sqlite3
   teaspoon
   therubyracer
-  uglifier (>= 1.3.0)
   vcr (~> 2.9.3)
   webmock (~> 1.20.4)

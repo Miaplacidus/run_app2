@@ -4,3 +4,11 @@
 require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
+
+if Rails.env.development? || Rails.env.test?
+  require 'rubocop/rake_task'
+
+  RuboCop::RakeTask.new
+
+  task(:default).clear.enhance(%w(rubocop spec))
+end

@@ -191,7 +191,7 @@ function createMap(latitude, longitude, postId){
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         scrollwheel: false,
         styles: style
-    }
+    };
     //inizialize the map
   var map = new google.maps.Map(document.getElementById('gmaps-container' + postId), map_options);
   //add a custom marker to the map
@@ -218,10 +218,10 @@ function CustomZoomControl(controlDiv, map) {
 
   // Setup the click event listeners and zoom-in or out according to the clicked element
   google.maps.event.addDomListener(controlUIzoomIn, 'click', function() {
-      map.setZoom(map.getZoom()+1)
+      map.setZoom(map.getZoom()+1);
   });
   google.maps.event.addDomListener(controlUIzoomOut, 'click', function() {
-      map.setZoom(map.getZoom()-1)
+      map.setZoom(map.getZoom()-1);
   });
 }
 

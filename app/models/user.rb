@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
-  has_many :adm_circles, class_name:"Circle"
+  has_many :adm_circles, class_name: 'Circle'
   has_many :circle_users
-  has_many :circles, :through => :circle_users
+  has_many :circles, through: :circle_users
   has_many :commitments
-  has_many :created_posts, class_name:"Posts", foreign_key:"organizer_id"
+  has_many :created_posts, class_name: 'Posts', foreign_key: 'organizer_id'
   has_many :join_requests
   has_many :commitments
   has_many :posts, through: :commitments
@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email
 
   scope :committed_to_run, -> (post_id) { where(Post.where(id: post_id).first.commitments.pluck(:user_id)) }
-  scope :run_attendees, -> (post_id) { where(Post.where(id: post_id).first.commitments.where(fulfilled: true).pluck(:user_id) )}
+  scope :run_attendees, -> (post_id) { where(Post.where(id: post_id).first.commitments.where(fulfilled: true).pluck(:user_id)) }
   scope :requested_to_join_circle, -> (circle_id) { where(JoinRequest.where(circle_id: circle_id).pluck(:user_id)) }
   scope :nearby, -> (filters) { where("ST_Distance(location, 'POINT(? ?)') < ?", filters[:user_lon], filters[:user_lat], 12) }
 
@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   end
 
   def db_gender
-    User.genders[ User.find(id).gender.to_sym ]
+    User.genders[User.find(id).gender.to_sym]
   end
 
   def age_category
@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
     end
   end
 
-# Scope both of these; break out the calculation into pieces; make this act on the object, not the class
+  # Scope both of these; break out the calculation into pieces; make this act on the object, not the class
   def level
     # attended = Commitment.where("user_id = ? AND fulfilled = ?", id, true)
     # ((attended.map { |commitment| Post.where(id: commitment.post_id).first }.map { |post| post.pace }.inject { |memo, n| memo + n })/attended.length).round
@@ -86,12 +86,9 @@ class User < ActiveRecord::Base
     # (attended/total_commitments*100).round
     5
   end
-
 end
 
-=begin
-GENDER
-0 - Not Provided
-1 - Female
-2 - Male
-=end
+# GENDER
+# 0 - Not Provided
+# 1 - Female
+# 2 - Male

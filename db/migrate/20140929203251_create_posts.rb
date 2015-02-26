@@ -7,7 +7,7 @@ class CreatePosts < ActiveRecord::Migration
       t.float :latitude
       t.float :longitude
       t.integer :pace
-      t.text :notes, default: ""
+      t.text :notes, default: ''
       t.boolean :complete
       t.float :min_amt
       t.integer :age_pref
@@ -19,7 +19,7 @@ class CreatePosts < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index("posts", "creator_id")
-    add_index("posts", "circle_id")
+    add_index('posts', 'creator_id')
+    add_index('posts', 'circle_id')
   end
 end

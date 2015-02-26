@@ -7,7 +7,7 @@ class CreateCircleUsers < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index("circle_users", "circle_id")
-    add_index("circle_users", "user_id")
+    add_index('circle_users', 'circle_id')
+    add_index('circle_users', 'user_id')
   end
 end

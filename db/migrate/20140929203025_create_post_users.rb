@@ -7,7 +7,7 @@ class CreatePostUsers < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index("post_users", "post_id")
-    add_index("post_users", "user_id")
+    add_index('post_users', 'post_id')
+    add_index('post_users', 'user_id')
   end
 end

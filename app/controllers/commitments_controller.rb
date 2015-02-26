@@ -62,13 +62,14 @@ class CommitmentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_commitment
-      @commitment = Commitment.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def commitment_params
-      params.require(:commitment).permit(:amount, :fulfilled, :post_id, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_commitment
+    @commitment = Commitment.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def commitment_params
+    params.require(:commitment).permit(:amount, :fulfilled, :post_id, :user_id)
+  end
 end
